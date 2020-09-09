@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "641778917610",
+    "firebase_url": "https://qms-end-line-application.firebaseio.com",
+    "project_id": "qms-end-line-application",
+    "storage_bucket": "qms-end-line-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641778917610:android:b970cbefe341ef67527793",
+        "android_client_info": {
+          "package_name": "com.sqgc.qmsendlineapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641778917610-dekb9hu2pi784u58iuf1kp2hbhqftr0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg4vwWzGxEso46PkwGPavoWTcXuoNlqQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641778917610-dekb9hu2pi784u58iuf1kp2hbhqftr0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

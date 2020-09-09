@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /**
+  ~  * Created by Md. Rabiul Ali Sarker, Software Developer, IT, SQ Group
+  ~  * Created on on 8/4/20 4:16 PM
+  ~  * Copyright (c) 2020 . All rights reserved.
+  ~  * Last modified 8/4/20 11:17 AM
+  ~  */
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke android:width="1dp" />
+
+</shape>

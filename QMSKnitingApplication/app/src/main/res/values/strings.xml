@@ -1,0 +1,35 @@
+<!--
+  ~ /**
+  ~  * Created by Md. Rabiul Ali Sarker, Software Developer, IT, SQ Group
+  ~  * Created on on 8/24/20 4:32 PM
+  ~  * Copyright (c) 2020 . All rights reserved.
+  ~  * Last modified 8/24/20 4:27 PM
+  ~  */
+  -->
+
+<resources>
+    <string name="app_name">QMS Application</string>
+    <string name="logout">LOGOUT</string>
+    <string name="floor_info_header">QMS (FLOOR INFO)</string>
+    <string name="production_unit">Production Unit</string>
+    <string name="module">Module</string>
+    <string name="next">Next</string>
+    <string name="scan">SCAN</string>
+    <string name="line">Line</string>
+    <string name="login_head_line">QMS End Line</string>
+    <string name="application_login_subhead">Application Login</string>
+    <string name="password_hint">*******</string>
+    <string name="login">LOGIN</string>
+    <string name="company_title">SQ Group, IT</string>
+    <string name="buyer_upper">BUYER</string>
+    <string name="style_upper">STYLE</string>
+    <string name="po_upper">PO</string>
+    <string name="size_upper">SIZE</string>
+    <string name="color_upper">COLOR</string>
+    <string name="batch_quantity_upper">BATCH QUANTITY</string>
+    <string name="go_to_floor_entry">Go to Floor Entry</string>
+    <string name="pcs_to_be_check">Pcs to be check</string>
+    <string name="style_category_upper">STYLE CATEGORY</string>
+    <string name="qms_production_data_entry">QMS (PRODUCTION DATA ENTRY)</string>
+    <string name="set">SET</string>
+</resources>
