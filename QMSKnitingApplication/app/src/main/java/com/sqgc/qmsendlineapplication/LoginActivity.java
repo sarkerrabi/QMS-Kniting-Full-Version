@@ -12,6 +12,7 @@ package com.sqgc.qmsendlineapplication;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -87,6 +88,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
                 .withDisconnectableCallbacks()
                 .withBindableCallbacks()
                 .build(LoginActivity.this);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
 
 
         uuidsHared = new UUIDSHared(getApplicationContext());
@@ -100,6 +106,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
             }
         }
 
+        uuidsHared.saveScreenHeight(height);
+        uuidsHared.saveScreenWidth(width);
 
         checkPermission();
         if (uuidsHared.getLastSyncTime() != null) {

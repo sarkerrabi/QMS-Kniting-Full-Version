@@ -364,8 +364,19 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 
             backGridLayout.addView(titleText, i);
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
-            param.height = 40;
-            param.width = 42;
+            if (uuidsHared.getScreenWidth() == 1223 && uuidsHared.getScreenHeight() == 800) {
+                param.height = 40;
+                param.width = 42;
+            } else if (uuidsHared.getScreenWidth() == 1160 && uuidsHared.getScreenHeight() == 600) {
+                param.height = 25;
+                param.width = 40;
+            } else if (uuidsHared.getScreenWidth() == 979 && uuidsHared.getScreenHeight() == 600) {
+                param.height = 28;
+                param.width = 33;
+            } else {
+                param.height = 40;
+                param.width = 42;
+            }
             param.rightMargin = 2;
             param.topMargin = 2;
             titleText.setLayoutParams(param);
@@ -403,8 +414,19 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
             frontGridLayout.addView(titleText, i);
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
 
-            param.height = 40;
-            param.width = 42;
+            if (uuidsHared.getScreenWidth() == 1223 && uuidsHared.getScreenHeight() == 800) {
+                param.height = 40;
+                param.width = 42;
+            } else if (uuidsHared.getScreenWidth() == 1160 && uuidsHared.getScreenHeight() == 600) {
+                param.height = 25;
+                param.width = 40;
+            } else if (uuidsHared.getScreenWidth() == 979 && uuidsHared.getScreenHeight() == 600) {
+                param.height = 28;
+                param.width = 33;
+            } else {
+                param.height = 40;
+                param.width = 42;
+            }
             param.rightMargin = 2;
             param.topMargin = 2;
             titleText.setLayoutParams(param);

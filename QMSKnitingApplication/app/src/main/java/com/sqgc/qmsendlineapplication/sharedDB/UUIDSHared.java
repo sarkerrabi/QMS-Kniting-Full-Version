@@ -127,5 +127,25 @@ public class UUIDSHared {
 
     }
 
+    public void saveScreenWidth(int width) {
+        editor.putInt("WIDTH", width);
+        editor.apply();
+
+    }
+
+    public void saveScreenHeight(int height) {
+        editor.putInt("HEIGHT", height);
+        editor.apply();
+    }
+
+    public int getScreenWidth() {
+        return sharedPreferences.getInt("WIDTH", 0);
+
+    }
+
+    public int getScreenHeight() {
+        return sharedPreferences.getInt("HEIGHT", 0);
+    }
+
 
 }
