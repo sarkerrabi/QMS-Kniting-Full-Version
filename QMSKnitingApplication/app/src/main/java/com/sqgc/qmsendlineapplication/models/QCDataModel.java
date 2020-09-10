@@ -32,6 +32,8 @@ public class QCDataModel {
     private String po;
     private String smv;
     private int id;
+    private String operatorID;
+    private String machineID;
 
     public QCDataModel() {
     }
@@ -98,6 +100,22 @@ public class QCDataModel {
 
             return null;
         }
+    }
+
+    public String getOperatorID() {
+        return operatorID;
+    }
+
+    public void setOperatorID(String operatorID) {
+        this.operatorID = operatorID;
+    }
+
+    public String getMachineID() {
+        return machineID;
+    }
+
+    public void setMachineID(String machineID) {
+        this.machineID = machineID;
     }
 
     public int getId() {

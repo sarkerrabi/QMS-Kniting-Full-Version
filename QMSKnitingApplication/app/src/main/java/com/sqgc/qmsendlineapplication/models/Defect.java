@@ -29,6 +29,11 @@ public class Defect {
         this.defectCount = defectCount;
     }
 
+    public Defect(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getDefectPosID() {
         return defectPosID;
     }

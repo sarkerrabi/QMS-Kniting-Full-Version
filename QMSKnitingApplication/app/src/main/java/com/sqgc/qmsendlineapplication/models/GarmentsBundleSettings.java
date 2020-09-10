@@ -19,8 +19,26 @@ public class GarmentsBundleSettings {
     private Buyer buyer;
     private PO po;
     private String smv;
+    private String operatorID = "1001";
+    private String machineID = "2002";
 
     public GarmentsBundleSettings() {
+    }
+
+    public String getOperatorID() {
+        return operatorID;
+    }
+
+    public void setOperatorID(String operatorID) {
+        this.operatorID = operatorID;
+    }
+
+    public String getMachineID() {
+        return machineID;
+    }
+
+    public void setMachineID(String machineID) {
+        this.machineID = machineID;
     }
 
     public Buyer getBuyer() {

@@ -36,13 +36,16 @@ import com.novoda.merlin.NetworkStatus;
 import com.sqgc.qmsendlineapplication.adapters.DefectAdapter;
 import com.sqgc.qmsendlineapplication.dialogs.SimpleAlertDialog;
 import com.sqgc.qmsendlineapplication.models.Defect;
+import com.sqgc.qmsendlineapplication.models.QCDataModel;
 import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIResponseModel;
 import com.sqgc.qmsendlineapplication.models.db_models.QmsDetailsInformation;
 import com.sqgc.qmsendlineapplication.models.db_models.StyleImageDataModel;
 import com.sqgc.qmsendlineapplication.presenters.MainPresenter;
+import com.sqgc.qmsendlineapplication.presenters.MainPresenterUpdated;
 import com.sqgc.qmsendlineapplication.sharedDB.LotSetShared;
 import com.sqgc.qmsendlineapplication.sharedDB.UUIDSHared;
 import com.sqgc.qmsendlineapplication.views.MainView;
+import com.sqgc.qmsendlineapplication.views.MainViewUpdated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +57,7 @@ import butterknife.OnClick;
 import static com.sqgc.qmsendlineapplication.common.CommonSettings.getCurrentTime;
 import static com.sqgc.qmsendlineapplication.common.CommonSettings.getDate;
 
-public class MainActivity extends AppCompatActivity implements MainView, Connectable, Bindable, Disconnectable {
+public class MainActivity extends AppCompatActivity implements MainView, Connectable, Bindable, Disconnectable, MainViewUpdated {
 
     List<TextView> textViewList = new ArrayList<>();
 
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
     Button btBackSide;
 
     MainPresenter mainPresenter;
+    MainPresenterUpdated mainPresenterUpdated;
     @BindView(R.id.rvDefects)
     RecyclerView rvDefects;
     @BindView(R.id.tvGarmentCount)
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         lotSetShared = new LotSetShared(getApplicationContext());
         uuidsHared = new UUIDSHared(getApplicationContext());
         mainPresenter = new MainPresenter(this, getApplicationContext(), MainActivity.this);
+        mainPresenterUpdated = new MainPresenterUpdated(this, getApplicationContext(), MainActivity.this);
         frontGridLayout = findViewById(R.id.grid_lay);
         backGridLayout = findViewById(R.id.grid_lay2);
 
@@ -203,11 +208,18 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
     public void onAddQCdata(Defect defect) {
         mainPresenter.insertDefectIntoDataTable(defect);
 
+        //preknit
+        mainPresenterUpdated.insertDefectIntoPreDataTable(defect);
+
+
     }
 
     @Override
     public void onRemoveQCData(Defect defect) {
         mainPresenter.deleteDefectInfoDataTable(defect);
+
+        //preknit
+        mainPresenterUpdated.deleteDefectInfoDataTable(defect);
 
     }
 
@@ -247,6 +259,33 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         }
     }
 
+    //preknit
+    @Override
+    public void onSendCSVDataIntoServerSuccessfullyUpdated(BarcodeAPIResponseModel barcodeAPIResponseModel, List<QCDataModel> qcDataModelList) {
+        Toast.makeText(this, barcodeAPIResponseModel.getMsg(), Toast.LENGTH_SHORT).show();
+        if (qcDataModelList != null) {
+            if (!qcDataModelList.isEmpty()) {
+                mainPresenterUpdated.updateSyncData(qcDataModelList, barcodeAPIResponseModel);
+            }
+        }
+    }
+
+    @Override
+    public void onSendCSVDataFailedUpdated(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeleteDataSuccessfulUpdated(BarcodeAPIResponseModel barcodeAPIResponseModel, int lotNo, int garmentNo) {
+        Toast.makeText(this, barcodeAPIResponseModel.getMsg(), Toast.LENGTH_SHORT).show();
+        mainPresenterUpdated.deleteDataFromLocalDB(lotNo, garmentNo);
+    }
+
+    @Override
+    public void onDeleteDataFailedUpdated(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onSendCSVDataFailed(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -267,12 +306,41 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
     public void onDeleteDataSuccessful(BarcodeAPIResponseModel barcodeAPIResponseModel, int lotNo, int garmentNo) {
         Toast.makeText(this, barcodeAPIResponseModel.getMsg(), Toast.LENGTH_SHORT).show();
         mainPresenter.deleteDataFromLocalDB(lotNo, garmentNo);
+        //preknit
+        mainPresenterUpdated.deleteDataFromLocalDBUpdated(lotNo, garmentNo);
     }
 
     @Override
     public void onDeleteDataFailed(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
+    }
+
+    //preknit
+    @Override
+    public void onUpdateLocalDBSuccessfulUpdated(String msg) {
+        if (msg != null) {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        }
+        uuidsHared.saveLastSyncTime(getDate() + " " + getCurrentTime());
+        setLastSyncData();
+    }
+
+    //preknit
+    @Override
+    public void onUpdateGarmentsCountUpdated() {
+        tvGarmentCount.setText("Garments Count.: " + lotSetShared.getGarmentsCount());
+        if (lotSetShared.getGarmentsCount() == 0) {
+            btUndo.setVisibility(View.INVISIBLE);
+        }
+        //preknit
+        mainPresenterUpdated.setTotalGarmentsCount();
+    }
+
+    //preknit
+    @Override
+    public void onTotalGarmentCountReadyUpdated(int totalGarmentsEntryInADay) {
+        tvTGEntry.setText("T.G.Entry: " + totalGarmentsEntryInADay);
     }
 
     @Override
@@ -364,7 +432,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
     @OnClick(R.id.bt_undo)
     public void onViewUndoClicked() {
 
-        mainPresenter.undoAGarments(uuidsHared.getLotNo(), lotSetShared.getGarmentsCount());
+        //mainPresenter.undoAGarments(uuidsHared.getLotNo(), lotSetShared.getGarmentsCount());
+        //preknit
+        mainPresenterUpdated.undoAGarments(uuidsHared.getLotNo(), lotSetShared.getGarmentsCount());
+
 
     }
 
@@ -379,6 +450,9 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
             onUpdateGarmentsCount();
             mainPresenter.checkNoDefectEntry();
 
+            //preknit
+            mainPresenterUpdated.checkNoDefectEntry();
+
         } else {
             int value = Integer.parseInt(btNextCountGarment.getText().toString());
             int myMax = Integer.parseInt(lotSetShared.getGarmentSettings().getGarmentsTobeChecked()) - lotSetShared.getGarmentsCount();
@@ -389,6 +463,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
             } else {
 
                 mainPresenter.addMultipleGarment(lotSetShared.getGarmentsCount() + 1, value, Integer.parseInt(lotSetShared.getGarmentSettings().getGarmentsTobeChecked()));
+
+                //preknit
+                mainPresenterUpdated.addMultipleGarment(lotSetShared.getGarmentsCount() + 1, value, Integer.parseInt(lotSetShared.getGarmentSettings().getGarmentsTobeChecked()));
+
 
                 onUpdateGarmentsCount();
                 btNextCountGarment.setText("");
@@ -404,7 +482,8 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         }
         mainPresenter.setTotalGarmentsCount();
 
-        mainPresenter.sendDefectData();
+        mainPresenterUpdated.sendCSVData();
+//        mainPresenter.sendDefectData();
 
     }
 
