@@ -40,6 +40,7 @@ import com.novoda.merlin.NetworkStatus;
 import com.sqgc.qmsendlineapplication.dialogs.Loader;
 import com.sqgc.qmsendlineapplication.models.api_models.LoginResponse;
 import com.sqgc.qmsendlineapplication.models.sync_model.DataSyncModel;
+import com.sqgc.qmsendlineapplication.preknit.activities.ManualMainActivity;
 import com.sqgc.qmsendlineapplication.presenters.LoginPresenter;
 import com.sqgc.qmsendlineapplication.sharedDB.LotSetShared;
 import com.sqgc.qmsendlineapplication.sharedDB.UUIDSHared;
@@ -167,8 +168,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
                     && uuidsHared.getUserData().getBusinessUnitId().equals(result.getBusinessUnitId())) {
 
                 if (lotSetShared.getGarmentsCount() < Integer.parseInt(lotSetShared.getGarmentSettings().getGarmentsTobeChecked())) {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     uuidsHared.saveUserData(result);
+                    if (lotSetShared.getManualOrScan()) {
+                        startActivity(new Intent(getApplicationContext(), ManualMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    }
                     finish();
 
                 } else {

@@ -120,5 +120,14 @@ public class LotSetShared {
         sharedPreferences.edit().clear().apply();
     }
 
+    public void saveManualOrScan(boolean isManual) {
+        editor.putBoolean("IS_MANUAL", isManual);
+        editor.apply();
+    }
+
+    public boolean getManualOrScan() {
+        return sharedPreferences.getBoolean("IS_MANUAL", false);
+    }
+
 
 }

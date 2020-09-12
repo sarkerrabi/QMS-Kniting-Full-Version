@@ -159,6 +159,7 @@ public class ProductionEntryActivity extends AppCompatActivity implements Produc
                 break;
             case R.id.bt_set:
                 setProductionFloorData();
+                lotSetShared.saveManualOrScan(false);
                 break;
         }
     }

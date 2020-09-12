@@ -370,6 +370,7 @@ public class ManualEntryActivity extends AppCompatActivity {
 /*            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();*/
 
+            lotSetShared.saveManualOrScan(true);
             Intent intent = new Intent(getApplicationContext(), ManualMainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
