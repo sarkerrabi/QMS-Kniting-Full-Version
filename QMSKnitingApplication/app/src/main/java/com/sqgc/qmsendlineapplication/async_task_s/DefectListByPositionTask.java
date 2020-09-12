@@ -128,18 +128,17 @@ public class DefectListByPositionTask extends AsyncTask<String, String, String> 
                 } else {
                     productionEntryView.onDefectListAPIFailed(response.message());
                 }
+                loader.hideDialog();
 
             }
 
             @Override
             public void onFailure(Call<SavedPrimaryKeyDataResponse> call, Throwable t) {
                 productionEntryView.onDefectListAPIFailed(t.getMessage());
-
+                loader.hideDialog();
             }
         });
 
-
-        loader.hideDialog();
 
     }
 
