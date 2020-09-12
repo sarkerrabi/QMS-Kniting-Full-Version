@@ -305,9 +305,9 @@ public class QCDataModel {
                 time + ".><." +
                 date + ".><." +
                 batchQty + ".><." +
-                buyerName + ".><." +
-                styleCat + ".><." +
-                styleSubCat + ".><." +
+                buyerName + ".><.\"" +
+                styleCat + "\".><.\"" +
+                styleSubCat + "\".><." +
                 po + ".><." +
                 getDateForUniqueGarment() + String.format("%02d", lotNo) + String.format("%03d", garmentNo) + ".><." +
                 garmentPos + ".><." +
@@ -316,6 +316,8 @@ public class QCDataModel {
                 color + ".><." +
                 defectPos + ".><." +
                 smv + ".><." +
-                size + "--";
+                size + ".><." +
+                operatorID + ".><." +
+                machineID + "--";
     }
 }
