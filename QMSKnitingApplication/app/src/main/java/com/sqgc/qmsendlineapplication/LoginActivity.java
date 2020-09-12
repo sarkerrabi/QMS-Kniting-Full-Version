@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
         }
 
         if (uuidsHared.getUserData() != null) {
-            ivSync.setVisibility(View.VISIBLE);
+            ivSync.setVisibility(View.GONE);
         } else {
             ivSync.setVisibility(View.GONE);
         }
@@ -142,14 +142,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */
-                        Log.d("TAGFLOOR", "onPermissionDenied: ");
+                        //Log.d("TAGFLOOR", "onPermissionDenied: ");
                         checkPermission();
 
                     }
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        Log.d("TAGFLOOR", "onPermissionRationaleShouldBeShown: ");
+                        //Log.d("TAGFLOOR", "onPermissionRationaleShouldBeShown: ");
 
 
                     }
