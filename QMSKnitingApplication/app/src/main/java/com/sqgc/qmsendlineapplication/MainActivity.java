@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 
     @Override
     public void onAddQCdata(Defect defect) {
-        mainPresenter.insertDefectIntoDataTable(defect);
+        //mainPresenter.insertDefectIntoDataTable(defect);
 
         //preknit
         mainPresenterUpdated.insertDefectIntoPreDataTable(defect);
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 
     @Override
     public void onRemoveQCData(Defect defect) {
-        mainPresenter.deleteDefectInfoDataTable(defect);
+        //mainPresenter.deleteDefectInfoDataTable(defect);
 
         //preknit
         mainPresenterUpdated.deleteDefectInfoDataTable(defect);

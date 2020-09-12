@@ -34,6 +34,7 @@ import com.sqgc.qmsendlineapplication.models.Module;
 import com.sqgc.qmsendlineapplication.models.ProductionUnit;
 import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIDataModel;
 import com.sqgc.qmsendlineapplication.models.api_models.LoginResponse;
+import com.sqgc.qmsendlineapplication.preknit.activities.ManualEntryActivity;
 import com.sqgc.qmsendlineapplication.presenters.FloorInfoPresenter;
 import com.sqgc.qmsendlineapplication.sharedDB.LotSetShared;
 import com.sqgc.qmsendlineapplication.sharedDB.SelectionSetting;
@@ -142,6 +143,14 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
         }
     }
 
+    @OnClick(R.id.bt_set_floor)
+    public void onViewManualClicked() {
+        if (floorSetting.getLine() != null || floorSetting.getModule() != null || floorSetting.getProductionUnit() != null) {
+            lotSetShared.saveFloorSetting(floorSetting);
+            startActivity(new Intent(FloorInfoActivity.this, ManualEntryActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        }
+    }
+
 
     @Override
     public void onBarcodeDetailsReady(BarcodeAPIDataModel barcodeAPIDataModel) {
@@ -221,4 +230,6 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
         internetAlertDialog.setMessage("NO INTERNET CONNECTION !!! \nPLEASE CHECK YOUR INTERNET CONNECTION");
         internetAlertDialog.show();
     }
+
+
 }

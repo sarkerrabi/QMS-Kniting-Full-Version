@@ -14,6 +14,7 @@ import java.util.Date;
 
 public class CommonSettings {
 
+    public static final String PREFS_NAME = "INPUT_HISTORY_SHARED_DB";
     //DB Static
     public static String sharedPrefName = "QMSELCacheDB";
     public static String sharedUUIDPrefName = "QMSELCacheDeviceID";

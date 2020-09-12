@@ -1,12 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ /**
-  ~  * Created by Md. Rabiul Ali Sarker, Software Developer, IT, SQ Group
-  ~  * Created on on 8/24/20 2:58 PM
-  ~  * Copyright (c) 2020 . All rights reserved.
-  ~  * Last modified 8/24/20 2:40 PM
-  ~  */
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sqgc.qmsendlineapplication">
 
@@ -23,9 +15,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".preknit.activities.ManualMainActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".preknit.activities.ManualEntryActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden" />
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
+
         <service
             android:name="com.novoda.merlin.MerlinService"
             android:exported="false" />
@@ -46,11 +54,7 @@
             android:name=".LoginActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

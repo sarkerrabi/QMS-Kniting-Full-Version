@@ -28,11 +28,14 @@ public class LoginPresenter {
     private Activity activity;
     private ApiService apiService;
     private DBHelper dbHelper;
+    private com.sqgc.qmsendlineapplication.preknit.database.DBHelper myDBHelper;
 
     public LoginPresenter(LoginView loginView, Context context, Activity activity) {
         this.loginView = loginView;
         dbHelper = new DBHelper(context);
+        myDBHelper = new com.sqgc.qmsendlineapplication.preknit.database.DBHelper(context);
         dbHelper.getWritableDatabase();
+        myDBHelper.getWritableDatabase();
         dbHelper.close();
         this.context = context;
         this.activity = activity;

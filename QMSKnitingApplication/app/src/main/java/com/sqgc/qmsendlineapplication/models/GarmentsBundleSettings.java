@@ -10,6 +10,7 @@
 package com.sqgc.qmsendlineapplication.models;
 
 public class GarmentsBundleSettings {
+    private String styleCategory;
     private int styleID;
     private String styleSubCategory;
     private String color;
@@ -111,5 +112,13 @@ public class GarmentsBundleSettings {
 
     public void setSmv(String smv) {
         this.smv = smv;
+    }
+
+    public String getStyleCategory() {
+        return styleCategory;
+    }
+
+    public void setStyleCategory(String styleCategory) {
+        this.styleCategory = styleCategory;
     }
 }
