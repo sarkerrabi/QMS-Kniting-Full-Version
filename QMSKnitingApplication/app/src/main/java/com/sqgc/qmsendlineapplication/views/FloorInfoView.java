@@ -10,7 +10,10 @@
 package com.sqgc.qmsendlineapplication.views;
 
 
+import com.sqgc.qmsendlineapplication.models.Line;
 import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIDataModel;
+
+import java.util.List;
 
 public interface FloorInfoView {
 /*    void onLineListReady(List<Line> lines);
@@ -22,4 +25,6 @@ public interface FloorInfoView {
     void onBarcodeDetailsReady(BarcodeAPIDataModel body);
 
     void onBarcodeFailed(String error_message);
+
+    void onLineListReady(List<Line> allLines);
 }

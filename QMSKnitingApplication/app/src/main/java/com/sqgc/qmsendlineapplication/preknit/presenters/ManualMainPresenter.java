@@ -19,7 +19,7 @@ import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIResponseModel;
 import com.sqgc.qmsendlineapplication.network.ApiClient;
 import com.sqgc.qmsendlineapplication.preknit.database.DBHelper;
 import com.sqgc.qmsendlineapplication.preknit.views.ManualMainView;
-import com.sqgc.qmsendlineapplication.services.ApiService;
+import com.sqgc.qmsendlineapplication.services.ApiServiceUpdated;
 import com.sqgc.qmsendlineapplication.sharedDB.LotSetShared;
 import com.sqgc.qmsendlineapplication.sharedDB.UUIDSHared;
 
@@ -49,7 +49,7 @@ public class ManualMainPresenter {
     private ManualMainView mainView;
     private Context context;
     private DBHelper dbHelper;
-    private ApiService apiService;
+    private ApiServiceUpdated apiService;
 
     public ManualMainPresenter(ManualMainView mainView, Context context, Activity activity) {
         this.mainView = mainView;
@@ -61,7 +61,7 @@ public class ManualMainPresenter {
         uuidsHared = new UUIDSHared(context);
         lotSetShared = new LotSetShared(context);
         if (apiService == null) {
-            apiService = ApiClient.getRetrofit().create(ApiService.class);
+            apiService = ApiClient.getRetrofit().create(ApiServiceUpdated.class);
         }
     }
 
@@ -288,7 +288,7 @@ public class ManualMainPresenter {
         List<QCDataModel> qcDataModelList = dbHelper.getAllQCDataModelsByGarmentNoForDeletingFromServer(uuidsHared.getTimeStamp(), garmentNo, lotNo, getDate());
         Gson gson = new Gson();
         String undoGarmentsData = gson.toJson(qcDataModelList);
-        Call<BarcodeAPIResponseModel> call = apiService.deleteDataFromServer(undoGarmentsData);
+        Call<BarcodeAPIResponseModel> call = apiService.deleteDataFromServerUpdated(undoGarmentsData);
         call.enqueue(new Callback<BarcodeAPIResponseModel>() {
             @Override
             public void onResponse(Call<BarcodeAPIResponseModel> call, Response<BarcodeAPIResponseModel> response) {
@@ -332,7 +332,7 @@ public class ManualMainPresenter {
         String exportData = gson.toJson(qcDataModelList);
 //        Log.e("TAG_CSV_JSON", "sendjsonData: "+ exportData);
 
-        Call<BarcodeAPIResponseModel> call = apiService.sendCSVData(exportData);
+        Call<BarcodeAPIResponseModel> call = apiService.sendCSVDataUpdated(exportData);
         call.enqueue(new Callback<BarcodeAPIResponseModel>() {
             @Override
             public void onResponse(Call<BarcodeAPIResponseModel> call, Response<BarcodeAPIResponseModel> response) {

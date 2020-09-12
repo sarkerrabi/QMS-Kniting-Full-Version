@@ -14,6 +14,7 @@ import android.content.Context;
 
 import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIDataModel;
 import com.sqgc.qmsendlineapplication.network.ApiClient;
+import com.sqgc.qmsendlineapplication.preknit.database.DBHelper;
 import com.sqgc.qmsendlineapplication.services.ApiService;
 import com.sqgc.qmsendlineapplication.views.FloorInfoView;
 
@@ -27,20 +28,21 @@ public class FloorInfoPresenter {
     private Context context;
     private Activity activity;
     private ApiService apiService;
+    private DBHelper myDBHelper;
 
 
     public FloorInfoPresenter(FloorInfoView floorInfoView, Context context, Activity activity) {
         this.floorInfoView = floorInfoView;
         this.context = context;
         this.activity = activity;
-
+        myDBHelper = new DBHelper(context);
         if (apiService == null) {
             apiService = ApiClient.getRetrofit().create(ApiService.class);
         }
     }
 
     public void getLinesFromDB() {
-        //floorInfoView.onLineListReady(dbHelper.getAllLines());
+        floorInfoView.onLineListReady(myDBHelper.getAllLines());
     }
 
 

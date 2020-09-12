@@ -120,7 +120,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 
         onUpdateGarmentsCount();
 
-        mainPresenter.setTotalGarmentsCount();
+//        mainPresenter.setTotalGarmentsCount();
+
+        //preknit
+        mainPresenterUpdated.setTotalGarmentsCount();
 
         merlin.registerConnectable(this);
         merlin.registerDisconnectable(this);
@@ -229,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         if (lotSetShared.getGarmentsCount() == 0) {
             btUndo.setVisibility(View.INVISIBLE);
         }
-        mainPresenter.setTotalGarmentsCount();
+        // mainPresenter.setTotalGarmentsCount();
     }
 
     @Override
@@ -270,17 +273,20 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         }
     }
 
+    //preknit
     @Override
     public void onSendCSVDataFailedUpdated(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    //preknit
     @Override
     public void onDeleteDataSuccessfulUpdated(BarcodeAPIResponseModel barcodeAPIResponseModel, int lotNo, int garmentNo) {
         Toast.makeText(this, barcodeAPIResponseModel.getMsg(), Toast.LENGTH_SHORT).show();
         mainPresenterUpdated.deleteDataFromLocalDB(lotNo, garmentNo);
     }
 
+    //preknit
     @Override
     public void onDeleteDataFailedUpdated(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -470,7 +476,8 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
             lotSetShared.saveGarmentsCount();
 
             onUpdateGarmentsCount();
-            mainPresenter.checkNoDefectEntry();
+
+//            mainPresenter.checkNoDefectEntry();
 
             //preknit
             mainPresenterUpdated.checkNoDefectEntry();
@@ -484,7 +491,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 
             } else {
 
-                mainPresenter.addMultipleGarment(lotSetShared.getGarmentsCount() + 1, value, Integer.parseInt(lotSetShared.getGarmentSettings().getGarmentsTobeChecked()));
+//                mainPresenter.addMultipleGarment(lotSetShared.getGarmentsCount() + 1, value, Integer.parseInt(lotSetShared.getGarmentSettings().getGarmentsTobeChecked()));
 
                 //preknit
                 mainPresenterUpdated.addMultipleGarment(lotSetShared.getGarmentsCount() + 1, value, Integer.parseInt(lotSetShared.getGarmentSettings().getGarmentsTobeChecked()));
@@ -502,8 +509,12 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         if (lotSetShared.getGarmentsCount() >= Integer.parseInt(lotSetShared.getGarmentSettings().getGarmentsTobeChecked())) {
             goNewLot();
         }
-        mainPresenter.setTotalGarmentsCount();
 
+//        mainPresenter.setTotalGarmentsCount();
+
+        //preknit
+        mainPresenterUpdated.setTotalGarmentsCount();
+        //preknit
         mainPresenterUpdated.sendCSVData();
 //        mainPresenter.sendDefectData();
 

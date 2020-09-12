@@ -12,6 +12,10 @@ package com.sqgc.qmsendlineapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,8 @@ import com.sqgc.qmsendlineapplication.sharedDB.SelectionSetting;
 import com.sqgc.qmsendlineapplication.sharedDB.UUIDSHared;
 import com.sqgc.qmsendlineapplication.views.FloorInfoView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -58,8 +64,8 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
     TextView tvProductionUnit;
     @BindView(R.id.tv_module)
     TextView tvModule;
-    @BindView(R.id.tv_line)
-    TextView tvLine;
+    @BindView(R.id.sp_line)
+    Spinner spLine;
 
     AlertDialog internetAlertDialog;
     private Merlin merlin;
@@ -91,7 +97,7 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
 
         floorSetting = new FloorSetting();
         floorInfoPresenter = new FloorInfoPresenter(this, getApplicationContext(), this);
-
+        floorInfoPresenter.getLinesFromDB();
         merlin = new Merlin.Builder()
                 .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
@@ -100,10 +106,10 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
 
         if (uuidsHared.getUserData() != null) {
             LoginResponse loginResponse = uuidsHared.getUserData();
-            if (loginResponse.getLineNumber() != null) {
+/*            if (loginResponse.getLineNumber() != null) {
                 tvLine.setText(loginResponse.getLineNumber());
                 floorSetting.setLine(new Line(0, loginResponse.getLineNumber()));
-            }
+            }*/
 
             if (loginResponse.getProductionUnit() != null) {
                 tvProductionUnit.setText(loginResponse.getProductionUnit());
@@ -175,6 +181,39 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
     @Override
     public void onBarcodeFailed(String error_message) {
         Toast.makeText(this, error_message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLineListReady(List<Line> lines) {
+        if (lines != null) {
+            if (!lines.isEmpty()) {
+                String[] lineArray = new String[lines.size()];
+
+                for (int i = 0; i < lines.size(); i++) {
+                    lineArray[i] = lines.get(i).getName();
+                }
+                //Creating the ArrayAdapter instance having the country list
+                ArrayAdapter aaLineCat = new ArrayAdapter(this, android.R.layout.simple_spinner_item, lineArray);
+                aaLineCat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                //Setting the ArrayAdapter data on the Spinner
+                spLine.setAdapter(aaLineCat);
+                spLine.setSelection(selectionSetting.getLinePos() < lines.size() ? selectionSetting.getLinePos() : 0);
+                spLine.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        selectionSetting.saveLineSelection(i);
+                        floorSetting.setLine(lines.get(i));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+
+            }
+        }
     }
 
     @OnClick(R.id.bt_logout)

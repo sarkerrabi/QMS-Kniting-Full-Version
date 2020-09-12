@@ -61,6 +61,10 @@ public class ProductionEntryActivity extends AppCompatActivity implements Produc
     BarcodeAPIDataModel barcodeAPIDataModel;
 
     AlertDialog internetAlertDialog;
+    @BindView(R.id.operator_id)
+    EditText etOperatorId;
+    @BindView(R.id.machine_id)
+    EditText etMachineId;
     private Merlin merlin;
 
     @Override
@@ -154,6 +158,20 @@ public class ProductionEntryActivity extends AppCompatActivity implements Produc
     }
 
     private void setProductionFloorData() {
+        //operatorID
+        if (etOperatorId.getText().toString().isEmpty()) {
+            etOperatorId.setError("Operator ID is required*");
+            return;
+        }
+        garmentsBundleSettings.setOperatorID(etOperatorId.getText().toString());
+
+
+        //machine ID
+        if (etMachineId.getText().toString().isEmpty()) {
+            etMachineId.setError("Machine ID is required*");
+            return;
+        }
+        garmentsBundleSettings.setMachineID(etMachineId.getText().toString());
 
         if (pcTobeChecked.getText().toString().isEmpty()) {
             pcTobeChecked.setError("PCs to be checked is required*");
