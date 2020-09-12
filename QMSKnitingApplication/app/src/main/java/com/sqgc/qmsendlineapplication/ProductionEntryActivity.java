@@ -16,10 +16,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.novoda.merlin.Bindable;
 import com.novoda.merlin.Connectable;
 import com.novoda.merlin.Disconnectable;
@@ -39,6 +42,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ProductionEntryActivity extends AppCompatActivity implements ProductionEntryView, Connectable, Bindable, Disconnectable {
+
+    private static int BARCODE_SCAN_CODE = 404;
     @BindView(R.id.tv_buyer)
     TextView tvBuyer;
     @BindView(R.id.tv_style)
@@ -65,6 +70,7 @@ public class ProductionEntryActivity extends AppCompatActivity implements Produc
     EditText etOperatorId;
     @BindView(R.id.machine_id)
     EditText etMachineId;
+
     private Merlin merlin;
 
     @Override
@@ -262,4 +268,60 @@ public class ProductionEntryActivity extends AppCompatActivity implements Produc
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                //Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                if (BARCODE_SCAN_CODE == 1001) {
+                    if (result.getContents() != null) {
+                        etOperatorId.setText(result.getContents());
+
+                    } else {
+                        Toast.makeText(this, "No Barcode Found, Try Again!", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (BARCODE_SCAN_CODE == 2002) {
+                    if (result.getContents() != null) {
+                        etMachineId.setText(result.getContents());
+
+                    } else {
+                        Toast.makeText(this, "No Barcode Found, Try Again!", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @OnClick({R.id.bt_operator_scan, R.id.bt_machine_id_scan})
+    public void onScanViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bt_operator_scan:
+                BARCODE_SCAN_CODE = 1001;
+                IntentIntegrator integrator = new IntentIntegrator(this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.PDF_417);
+                integrator.setPrompt("Scan a Operator ID barcode");
+                integrator.setCameraId(0);  // Use a specific camera of the device
+                integrator.setBeepEnabled(false);
+                integrator.setBarcodeImageEnabled(true);
+                integrator.initiateScan();
+                break;
+            case R.id.bt_machine_id_scan:
+                BARCODE_SCAN_CODE = 2002;
+                IntentIntegrator integrator2 = new IntentIntegrator(this);
+                integrator2.setDesiredBarcodeFormats(IntentIntegrator.PDF_417);
+                integrator2.setPrompt("Scan a Machine ID barcode");
+                integrator2.setCameraId(0);  // Use a specific camera of the device
+                integrator2.setBeepEnabled(false);
+                integrator2.setBarcodeImageEnabled(true);
+                integrator2.initiateScan();
+                break;
+        }
+    }
 }

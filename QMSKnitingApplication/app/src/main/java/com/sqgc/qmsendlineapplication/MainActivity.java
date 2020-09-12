@@ -389,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 
             textViewList.add(titleText);
             int finalI = i + 1;
-            titleText.setText(finalI + " ");
+//            titleText.setText(finalI + " ");
             textViewList.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -440,7 +440,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
             textViewList.add(titleText);
 
             int finalI = i + 1;
-            titleText.setText(finalI + " ");
+//            titleText.setText(finalI + " ");
             textViewList.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

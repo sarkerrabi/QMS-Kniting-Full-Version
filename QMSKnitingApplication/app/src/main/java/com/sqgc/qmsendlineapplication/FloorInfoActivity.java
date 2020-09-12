@@ -141,7 +141,7 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
             lotSetShared.saveFloorSetting(floorSetting);
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setDesiredBarcodeFormats(IntentIntegrator.PDF_417);
-            integrator.setPrompt("Scan a barcode");
+            integrator.setPrompt("Scan a style barcode");
             integrator.setCameraId(0);  // Use a specific camera of the device
             integrator.setBeepEnabled(false);
             integrator.setBarcodeImageEnabled(true);

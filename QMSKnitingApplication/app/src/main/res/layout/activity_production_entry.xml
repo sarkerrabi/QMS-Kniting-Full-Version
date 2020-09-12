@@ -334,7 +334,7 @@
                             android:textStyle="bold" />
 
                         <Button
-                            android:id="@+id/bt_machine_scan"
+                            android:id="@+id/bt_machine_id_scan"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_30sdp"
                             android:layout_weight="1"
