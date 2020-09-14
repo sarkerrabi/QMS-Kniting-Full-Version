@@ -34,6 +34,7 @@ public class QCDataModel {
     private int id;
     private String operatorID;
     private String machineID;
+    private String userID;
 
     public QCDataModel() {
     }
@@ -270,10 +271,20 @@ public class QCDataModel {
         this.color = color;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
     @Override
     public String toString() {
         return "QCDataModel{" +
-                "unit='" + unit + '\'' +
+                "uid_code='" + uid_code + '\'' +
+                ", lotNo=" + lotNo +
+                ", unit='" + unit + '\'' +
                 ", line='" + line + '\'' +
                 ", time='" + time + '\'' +
                 ", date='" + date + '\'' +
@@ -288,6 +299,11 @@ public class QCDataModel {
                 ", defectPos='" + defectPos + '\'' +
                 ", size='" + size + '\'' +
                 ", po='" + po + '\'' +
+                ", smv='" + smv + '\'' +
+                ", id=" + id +
+                ", operatorID='" + operatorID + '\'' +
+                ", machineID='" + machineID + '\'' +
+                ", userID='" + userID + '\'' +
                 '}';
     }
 
@@ -318,6 +334,7 @@ public class QCDataModel {
                 smv + ".><." +
                 size + ".><." +
                 operatorID + ".><." +
-                machineID + "--";
+                machineID + ".><." +
+                userID + "--";
     }
 }

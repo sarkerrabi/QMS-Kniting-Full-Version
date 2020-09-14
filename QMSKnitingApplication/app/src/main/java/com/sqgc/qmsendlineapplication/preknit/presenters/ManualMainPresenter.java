@@ -142,7 +142,8 @@ public class ManualMainPresenter {
                 "SMV.><." +
                 "Size.><." +
                 "OperatorID.><." +
-                "MachineID--";
+                "MachineID.><." +
+                "UserID--";
         headerList = new ArrayList<>();
         headerList.add(header);
 
@@ -266,6 +267,7 @@ public class ManualMainPresenter {
             qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
             qcDataModel.setPo(lotSetShared.getGarmentSettings().getPo().getName());
             qcDataModel.setTime(getCurrentTime());
+            qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
             qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit().getName());
             qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
             qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());

@@ -525,7 +525,7 @@ public class ManualMainActivity extends AppCompatActivity implements ManualMainV
                 qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
                 qcDataModel.setDate(getDate());
                 qcDataModel.setTime(getCurrentTime());
-
+                qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
                 qcDataModel.setLine(lotSetShared.getFloorSetting().getLine().getName());
                 qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit().getName());
                 qcDataModel.setBuyerName(lotSetShared.getGarmentSettings().getBuyer().getName());
@@ -571,6 +571,7 @@ public class ManualMainActivity extends AppCompatActivity implements ManualMainV
                 qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
                 qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
                 qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
+                qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
 
                 qcDataModelList.remove(qcDataModel);
                 removeDefectWhereZero();

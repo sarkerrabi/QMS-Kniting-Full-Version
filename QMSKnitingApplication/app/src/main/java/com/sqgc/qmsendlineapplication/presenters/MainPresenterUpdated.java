@@ -11,7 +11,6 @@ package com.sqgc.qmsendlineapplication.presenters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -83,6 +82,7 @@ public class MainPresenterUpdated {
             qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
             qcDataModel.setDate(getDate());
             qcDataModel.setTime(getCurrentTime());
+            qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
 
             qcDataModel.setLine(lotSetShared.getFloorSetting().getLine().getName());
             qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit().getName());
@@ -117,6 +117,7 @@ public class MainPresenterUpdated {
             qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
             qcDataModel.setDate(getDate());
             qcDataModel.setTime(getCurrentTime());
+            qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
             qcDataModel.setLine(lotSetShared.getFloorSetting().getLine().getName());
             qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit().getName());
             qcDataModel.setBuyerName(lotSetShared.getGarmentSettings().getBuyer().getName());
@@ -183,7 +184,7 @@ public class MainPresenterUpdated {
 
         Gson gson = new Gson();
         String exportData = gson.toJson(qcDataModelList);
-        Log.e("TAG_CSV_JSON", "sendjsonData: " + exportData);
+        //Log.e("TAG_CSV_JSON", "sendjsonData: " + exportData);
 
         Call<BarcodeAPIResponseModel> call = apiService.sendCSVDataUpdated(exportData);
         call.enqueue(new Callback<BarcodeAPIResponseModel>() {
@@ -241,7 +242,8 @@ public class MainPresenterUpdated {
                 "SMV.><." +
                 "Size.><." +
                 "OperatorID.><." +
-                "MachineID--";
+                "MachineID.><." +
+                "UserID--";
         headerList = new ArrayList<>();
         headerList.add(header);
 
@@ -327,6 +329,7 @@ public class MainPresenterUpdated {
             qcDataModel.setLine(lotSetShared.getFloorSetting().getLine().getName());
             qcDataModel.setSize(lotSetShared.getGarmentSettings().getSize());
             qcDataModel.setStyleCat("Cardigan");
+            qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
             qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
             qcDataModel.setPo(lotSetShared.getGarmentSettings().getPo().getName());
             qcDataModel.setTime(getCurrentTime());

@@ -726,13 +726,13 @@ MachineID
 * */
 
     public static String selectAllQCdata = "Select * FROM QCDataTable;";
-    public static String selectAllDefectListData = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DEFECT.NAME, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID\n" +
+    public static String selectAllDefectListData = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DEFECT.NAME, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID,QCGarmentsDefect.userID\n" +
             "FROM QCGarmentsDefect \n" +
             "LEFT JOIN QCGarmentDefectCounts ON QCGarmentsDefect.ID = QCGarmentDefectCounts.QCGarmentDefectID \n" +
             "LEFT JOIN DEFECT on QCGarmentDefectCounts.DefectID = DEFECT.ID \n" +
             "WHERE Date = '";
 
-    public static String selectAllDefectListDataByGarmentsNo = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, DEFECT.NAME , DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID\n" +
+    public static String selectAllDefectListDataByGarmentsNo = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, DEFECT.NAME , DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID, QCGarmentsDefect.userID\n" +
             "FROM QCGarmentsDefect \n" +
             "JOIN QCGarmentDefectCounts on QCGarmentsDefect.ID = QCGarmentDefectCounts.QCGarmentDefectID\n" +
             "JOIN DEFECT on QCGarmentDefectCounts.DefectID = DEFECT.ID\n" +
@@ -748,13 +748,13 @@ MachineID
             "WHERE Date = '";
 
 
-    public static String selectAllDefectListDataForSending = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DEFECT.NAME, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.ID, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID \n" +
+    public static String selectAllDefectListDataForSending = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DEFECT.NAME, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.ID, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID, QCGarmentsDefect.userID\n" +
             "FROM QCGarmentsDefect \n" +
             "LEFT JOIN QCGarmentDefectCounts ON QCGarmentsDefect.ID = QCGarmentDefectCounts.QCGarmentDefectID \n" +
             "LEFT JOIN DEFECT on QCGarmentDefectCounts.DefectID = DEFECT.ID \n" +
             "WHERE Date = '";
 
-    public static String selectAllDefectListDataByGarmentsNoForDeleting = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DEFECT.NAME, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.ID, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID \n" +
+    public static String selectAllDefectListDataByGarmentsNoForDeleting = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DEFECT.NAME, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.ID, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID, QCGarmentsDefect.userID\n" +
             "FROM QCGarmentsDefect \n" +
             "LEFT JOIN QCGarmentDefectCounts on QCGarmentsDefect.ID = QCGarmentDefectCounts.QCGarmentDefectID\n" +
             "LEFT JOIN DEFECT on QCGarmentDefectCounts.DefectID = DEFECT.ID\n" +

@@ -72,7 +72,8 @@ public class DBCreateTableQueries {
             "\t\"SMV\"\tTEXT NOT NULL,\n" +
             "\t\"isSynced\"\tINTEGER NOT NULL DEFAULT 0,\n" +
             "\t\"OperatorID\"\tTEXT NOT NULL,\n" +
-            "\t\"MachineID\"\tTEXT NOT NULL\n" +
+            "\t\"MachineID\"\tTEXT NOT NULL,\n" +
+            "\t\"UserID\"\tTEXT NOT NULL\n" +
             ")";
 
 
