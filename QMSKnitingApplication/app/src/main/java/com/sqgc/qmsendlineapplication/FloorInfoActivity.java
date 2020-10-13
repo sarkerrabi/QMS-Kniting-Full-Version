@@ -37,6 +37,7 @@ import com.sqgc.qmsendlineapplication.models.Line;
 import com.sqgc.qmsendlineapplication.models.Module;
 import com.sqgc.qmsendlineapplication.models.ProductionUnit;
 import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIDataModel;
+import com.sqgc.qmsendlineapplication.models.api_models.CommonData;
 import com.sqgc.qmsendlineapplication.models.api_models.LoginResponse;
 import com.sqgc.qmsendlineapplication.preknit.activities.ManualEntryActivity;
 import com.sqgc.qmsendlineapplication.presenters.FloorInfoPresenter;
@@ -60,8 +61,8 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
     SelectionSetting selectionSetting;
     @BindView(R.id.tv_last_sync)
     TextView tvLastSync;
-    @BindView(R.id.tv_production_unit)
-    TextView tvProductionUnit;
+    @BindView(R.id.sp_production_unit)
+    Spinner spProductionUnit;
     @BindView(R.id.tv_module)
     TextView tvModule;
     @BindView(R.id.sp_line)
@@ -98,6 +99,9 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
         floorSetting = new FloorSetting();
         floorInfoPresenter = new FloorInfoPresenter(this, getApplicationContext(), this);
         floorInfoPresenter.getLinesFromDB();
+        floorInfoPresenter.getProductionUnitFromDB();
+
+
         merlin = new Merlin.Builder()
                 .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
@@ -111,10 +115,10 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
                 floorSetting.setLine(new Line(0, loginResponse.getLineNumber()));
             }*/
 
-            if (loginResponse.getProductionUnit() != null) {
+/*            if (loginResponse.getProductionUnit() != null) {
                 tvProductionUnit.setText(loginResponse.getProductionUnit());
                 floorSetting.setProductionUnit(new ProductionUnit(0, loginResponse.getProductionUnit()));
-            }
+            }*/
 
             if (loginResponse.getModuleName() != null) {
                 tvModule.setText(loginResponse.getModuleName());
@@ -214,6 +218,48 @@ public class FloorInfoActivity extends AppCompatActivity implements FloorInfoVie
 
             }
         }
+    }
+
+    @Override
+    public void onProductionUnitListReady(List<CommonData> commonDataList) {
+        if (commonDataList != null) {
+            if (!commonDataList.isEmpty()) {
+                String[] productionUnitArray = new String[commonDataList.size()];
+
+                for (int i = 0; i < commonDataList.size(); i++) {
+                    productionUnitArray[i] = commonDataList.get(i).getCommonName();
+                }
+                //Creating the ArrayAdapter instance having the country list
+                ArrayAdapter aaProductionUnitCat = new ArrayAdapter(this, android.R.layout.simple_spinner_item, productionUnitArray);
+                aaProductionUnitCat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                //Setting the ArrayAdapter data on the Spinner
+                spProductionUnit.setAdapter(aaProductionUnitCat);
+                spProductionUnit.setSelection(selectionSetting.getProductionUnitPos() < commonDataList.size() ? selectionSetting.getProductionUnitPos() : 0);
+                spProductionUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        selectionSetting.saveProductionUnitSelection(i);
+                        floorSetting.setProductionUnit(new ProductionUnit(commonDataList.get(i).getCommonId(), commonDataList.get(i).getCommonName()));
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onProductionUnitListFailed(String error_message) {
+        Log.e("COMMON", "onProductionUnitListFailed: " + error_message);
+
     }
 
     @OnClick(R.id.bt_logout)

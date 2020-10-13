@@ -13,10 +13,13 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIDataModel;
+import com.sqgc.qmsendlineapplication.models.api_models.CommonData;
 import com.sqgc.qmsendlineapplication.network.ApiClient;
 import com.sqgc.qmsendlineapplication.preknit.database.DBHelper;
 import com.sqgc.qmsendlineapplication.services.ApiService;
 import com.sqgc.qmsendlineapplication.views.FloorInfoView;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +56,32 @@ public class FloorInfoPresenter {
 
     public void getProductionUnitFromDB() {
         //floorInfoView.onProductionUnitsReady(dbHelper.getAllProductionUnit());
+        Call<List<CommonData>> call = apiService.getProductionUnitListData(1);
+
+        call.enqueue(new Callback<List<CommonData>>() {
+            @Override
+            public void onResponse(Call<List<CommonData>> call, Response<List<CommonData>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+
+                        floorInfoView.onProductionUnitListReady(response.body());
+                    } else {
+                        floorInfoView.onProductionUnitListFailed("Error QMS-101: Contact with developers");
+                    }
+
+
+                } else {
+                    floorInfoView.onProductionUnitListFailed(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CommonData>> call, Throwable t) {
+                floorInfoView.onProductionUnitListFailed(t.getMessage());
+
+            }
+        });
+
     }
 
 

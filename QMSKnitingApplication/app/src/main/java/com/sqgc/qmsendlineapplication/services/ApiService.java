@@ -11,10 +11,13 @@ package com.sqgc.qmsendlineapplication.services;
 
 import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIDataModel;
 import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIResponseModel;
+import com.sqgc.qmsendlineapplication.models.api_models.CommonData;
 import com.sqgc.qmsendlineapplication.models.api_models.DefectListByPositionAPIResponse;
 import com.sqgc.qmsendlineapplication.models.api_models.LoginResponse;
 import com.sqgc.qmsendlineapplication.models.api_models.PositionGridListAPIResponse;
 import com.sqgc.qmsendlineapplication.models.api_models.SavedPrimaryKeyDataResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -56,6 +59,10 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("SaveToQmsMasterTable")
     Call<SavedPrimaryKeyDataResponse> getSavedPKdata(@Query("UserId") int userID, @Query("MasterGenarationId") int masterGenerationID, @Query("TabId") String tabID, @Query("OperationSMV") String operationSMV);
+
+    @Headers("Content-Type: application/json")
+    @GET("GetAllCommonData")
+    Call<List<CommonData>> getProductionUnitListData(@Query("Status") int status);
 
 
 }

@@ -68,13 +68,20 @@
                     android:background="@drawable/spinner_bg"
                     android:padding="15dp">
 
-                    <TextView
-                        android:id="@+id/tv_production_unit"
+                    <!--                    <TextView
+                                            android:id="@+id/tv_production_unit"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:dropDownWidth="match_parent"
+                                            tools:text="Sample" />-->
+                    <Spinner
+                        android:id="@+id/sp_production_unit"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:dropDownWidth="match_parent"
-                        tools:text="Sample" />
+                        android:entries="@android:array/phoneTypes" />
 
                 </LinearLayout>
 

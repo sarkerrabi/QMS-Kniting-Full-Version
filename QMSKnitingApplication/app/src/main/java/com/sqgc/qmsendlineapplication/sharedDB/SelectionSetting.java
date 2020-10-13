@@ -32,8 +32,8 @@ public class SelectionSetting {
         editor.apply();
     }
 
-    public void saveBuyerSelection(int position) {
-        editor.putInt("BUYER_POS", position);
+    public void saveProductionUnitSelection(int position) {
+        editor.putInt("Production_Unit_POS", position);
         editor.apply();
     }
 
@@ -52,8 +52,8 @@ public class SelectionSetting {
         editor.apply();
     }
 
-    public int getBuyerPos() {
-        return sharedPreferences.getInt("BUYER_POS", 0);
+    public int getProductionUnitPos() {
+        return sharedPreferences.getInt("Production_Unit_POS", 0);
     }
 
     public int getStylePos() {
