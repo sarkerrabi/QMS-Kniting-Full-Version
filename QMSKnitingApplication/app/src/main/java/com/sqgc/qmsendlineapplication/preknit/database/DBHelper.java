@@ -985,7 +985,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int totalGarmentsEntryInADay(String date) {
 
-        String sql = DBQueries.totalGarmentsEntryInADay + date + "';";
+        String sql = DBQueries.totalGarmentsEntryInADay;
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -1130,6 +1130,27 @@ public class DBHelper extends SQLiteOpenHelper {
         return qcDataModelArrayList;
 
 
+    }
+
+    public void clearEntryData() {
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL("DROP TABLE IF EXISTS QCGarmentsDefect");
+            db.execSQL("DROP TABLE IF EXISTS QCGarmentDefectCounts");
+
+            Log.d("SQLite_DB", "Clear DB table");
+
+
+            db.execSQL(createQCGarmentsDefect);
+            db.execSQL(createQCGarmentDefectCounts);
+
+            Log.d("SQLite_DB", "Create DB table");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

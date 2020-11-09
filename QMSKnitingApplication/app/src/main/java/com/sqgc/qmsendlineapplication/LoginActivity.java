@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
     EditText etId;
     @BindView(R.id.et_pass)
     EditText etPass;
-
     UUIDSHared uuidsHared;
     LotSetShared lotSetShared;
     @BindView(R.id.tv_last_sync)
@@ -98,6 +97,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
 
         uuidsHared = new UUIDSHared(getApplicationContext());
         lotSetShared = new LotSetShared(getApplicationContext());
+
+        loginPresenter.setCleanTimer();
 
         if (uuidsHared.getUniqueID() == null) {
             try {

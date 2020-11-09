@@ -398,8 +398,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public int totalGarmentsEntryInADay(String date) {
 
         String sql = "SELECT DISTINCT LotNo, GarmentsNo\n" +
-                "FROM QCGarmentsDefectInfo " +
-                "WHERE Date = '" + date + "';";
+                "FROM QCGarmentsDefectInfo ";
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -658,6 +657,31 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
 
         return qmsDetailsInformations;
+    }
+
+
+    public void clearDBEntryData() {
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            Log.d("SQLite_DB", "Clear DB table");
+
+            db.execSQL("DROP TABLE IF EXISTS SilhouetteGrids;");
+            db.execSQL("DROP TABLE IF EXISTS StyleImage;");
+            db.execSQL("DROP TABLE IF EXISTS DefectListbyPositions;");
+            db.execSQL("DROP TABLE IF EXISTS QCGarmentsDefectInfo;");
+
+            Log.d("SQLite_DB", "Create DB table");
+            db.execSQL(createSilhouetteGridsTable);
+            db.execSQL(createImageListTable);
+            db.execSQL(createDefectListTable);
+            db.execSQL(createQCGarmentsDefectInfoTable);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

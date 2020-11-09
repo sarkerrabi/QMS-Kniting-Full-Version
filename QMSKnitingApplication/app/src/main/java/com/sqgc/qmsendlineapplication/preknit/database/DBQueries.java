@@ -744,8 +744,7 @@ MachineID
     public static String totalGarmentsEntryInADay = "SELECT DISTINCT LotNo, GarmentsNo\n" +
             "FROM QCGarmentsDefect  \n" +
             "LEFT JOIN QCGarmentDefectCounts ON QCGarmentsDefect.ID = QCGarmentDefectCounts.QCGarmentDefectID \n" +
-            "LEFT JOIN DEFECT on QCGarmentDefectCounts.DefectID = DEFECT.ID \n" +
-            "WHERE Date = '";
+            "LEFT JOIN DEFECT on QCGarmentDefectCounts.DefectID = DEFECT.ID ";
 
 
     public static String selectAllDefectListDataForSending = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DEFECT.NAME, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, QCGarmentsDefect.LotNo, QCGarmentsDefect.PO, SMV, QCGarmentsDefect.ID, QCGarmentsDefect.OperatorID, QCGarmentsDefect.MachineID, QCGarmentsDefect.userID\n" +
