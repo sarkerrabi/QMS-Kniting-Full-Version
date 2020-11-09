@@ -572,7 +572,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (!isFound) {
 
             String sql = "INSERT INTO \"QCGarmentsDefect\"(\"Unit\",\"Line\",\"Date\",\"Time\",\"BuyerName\",\"BatchQty\",\"StyleCategory\",\"StyleSubCategory\"," +
-                    "\"GarmentsNo\",\"GarmentPos\",\"Color\",\"DefectPos\",\"Size\",\"LotNo\",\"PO\",\"SMV\",\"OperatorID\",\"MachineID\",\"UserID\") \n" +
+                    "\"GarmentsNo\",\"GarmentPos\",\"Color\",\"DefectPos\",\"Size\",\"LotNo\",\"PO\",\"SMV\",\"OperatorID\",\"MachineID\",\"UserID\",\"ServerLotNo\") \n" +
                     "VALUES (" +
                     "'" + qcDataModel.getUnit() + "'," +
                     "'" + qcDataModel.getLine() + "'," +
