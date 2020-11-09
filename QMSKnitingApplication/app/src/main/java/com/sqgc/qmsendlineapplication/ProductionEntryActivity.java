@@ -58,6 +58,8 @@ public class ProductionEntryActivity extends AppCompatActivity implements Produc
     EditText pcTobeChecked;
     @BindView(R.id.tv_batch_qty)
     TextView tvBatchQty;
+    @BindView(R.id.tv_lot_no)
+    TextView tvLotNo;
 
     //cached obj
     GarmentsBundleSettings garmentsBundleSettings;
@@ -152,6 +154,7 @@ public class ProductionEntryActivity extends AppCompatActivity implements Produc
         garmentsBundleSettings.setMachineID(String.valueOf(barcodeAPIDataModel.getMachineId()));
 
         //server lot no
+        tvLotNo.setText(String.valueOf(barcodeAPIDataModel.getLotNo()));
         garmentsBundleSettings.setServerLotNo(String.valueOf(barcodeAPIDataModel.getLotNo()));
 
 
