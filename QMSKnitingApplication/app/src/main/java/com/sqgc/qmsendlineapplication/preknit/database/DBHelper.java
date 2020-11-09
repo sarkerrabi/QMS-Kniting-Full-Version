@@ -517,6 +517,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String operatorID = cursor.getString(18);
                 String machineID = cursor.getString(19);
                 String userID = cursor.getString(20);
+                String serverLotNo = cursor.getString(21);
 
                 Defect defect = new Defect(defectName, defectCount);
 
@@ -529,6 +530,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 qcDataModel.setOperatorID(operatorID);
                 qcDataModel.setMachineID(machineID);
                 qcDataModel.setUserID(userID);
+                qcDataModel.setServerLotNo(serverLotNo);
 
                 qcDataModelArrayList.add(qcDataModel);
             } while (cursor.moveToNext());
@@ -590,7 +592,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     "'" + qcDataModel.getSmv() + "'," +
                     "'" + qcDataModel.getOperatorID() + "'," +
                     "'" + qcDataModel.getMachineID() + "'," +
-                    "'" + qcDataModel.getUserID() + "'" +
+                    "'" + qcDataModel.getUserID() + "'," +
+                    "'" + qcDataModel.getServerLotNo() + "'" +
                     ");";
 
             try {
@@ -854,6 +857,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String operatorID = cursor.getString(18);
                 String machineID = cursor.getString(19);
                 String userID = cursor.getString(20);
+                String serverLotNo = cursor.getString(21);
 
                 Defect defect = new Defect(defectName, defectCount);
                 defect.setId(getDefectIDByName(defectName));
@@ -867,6 +871,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 qcDataModel.setOperatorID(operatorID);
                 qcDataModel.setMachineID(machineID);
                 qcDataModel.setUserID(userID);
+                qcDataModel.setServerLotNo(serverLotNo);
 
                 qcDataModelArrayList.add(qcDataModel);
             } while (cursor.moveToNext());
@@ -944,7 +949,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insertNoDefect(QCDataModel qcDataModel) {
 
         String sql = "INSERT INTO \"QCGarmentsDefect\"(\"Unit\",\"Line\",\"Date\",\"Time\",\"BuyerName\",\"BatchQty\",\"StyleCategory\",\"StyleSubCategory\"," +
-                "\"GarmentsNo\",\"GarmentPos\",\"Color\",\"DefectPos\",\"Size\",\"LotNo\",\"PO\",\"SMV\",\"OperatorID\",\"MachineID\",\"UserID\") \n" +
+                "\"GarmentsNo\",\"GarmentPos\",\"Color\",\"DefectPos\",\"Size\",\"LotNo\",\"PO\",\"SMV\",\"OperatorID\",\"MachineID\",\"UserID\",\"ServerLotNo\") \n" +
                 "VALUES (" +
                 "'" + qcDataModel.getUnit() + "'," +
                 "'" + qcDataModel.getLine() + "'," +
@@ -964,7 +969,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "'" + qcDataModel.getSmv() + "'," +
                 "'" + qcDataModel.getOperatorID() + "'," +
                 "'" + qcDataModel.getMachineID() + "'," +
-                "'" + qcDataModel.getUserID() + "'" +
+                "'" + qcDataModel.getUserID() + "'," +
+                "'" + qcDataModel.getServerLotNo() + "'" +
                 ");";
 
         try {
@@ -1034,6 +1040,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String operatorID = cursor.getString(19);
                 String machineID = cursor.getString(20);
                 String userID = cursor.getString(21);
+                String serverLotNo = cursor.getString(22);
 
                 Defect defect = new Defect(defectName, defectCount);
 
@@ -1048,6 +1055,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 qcDataModel.setMachineID(machineID);
                 qcDataModel.setOperatorID(operatorID);
                 qcDataModel.setUserID(userID);
+                qcDataModel.setServerLotNo(serverLotNo);
 
                 qcDataModelArrayList.add(qcDataModel);
             } while (cursor.moveToNext());
@@ -1107,6 +1115,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String operatorID = cursor.getString(19);
                 String machineID = cursor.getString(20);
                 String userID = cursor.getString(21);
+                String serverLotNo = cursor.getString(22);
 
                 Defect defect = new Defect(defectName, defectCount);
 
@@ -1121,6 +1130,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 qcDataModel.setMachineID(machineID);
                 qcDataModel.setOperatorID(operatorID);
                 qcDataModel.setUserID(userID);
+                qcDataModel.setServerLotNo(serverLotNo);
 
                 qcDataModelArrayList.add(qcDataModel);
             } while (cursor.moveToNext());

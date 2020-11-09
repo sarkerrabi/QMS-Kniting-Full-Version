@@ -47,9 +47,9 @@ public class MainPresenterUpdated {
     UUIDSHared uuidsHared;
     List<String> headerList;
     List<String> dataList;
-    private MainViewUpdated mainView;
-    private Context context;
-    private DBHelper dbHelper;
+    private final MainViewUpdated mainView;
+    private final Context context;
+    private final DBHelper dbHelper;
     private ApiServiceUpdated apiService;
 
 
@@ -91,6 +91,7 @@ public class MainPresenterUpdated {
             qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
             qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
             qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
+            qcDataModel.setServerLotNo(lotSetShared.getGarmentSettings().getServerLotNo());
 
             // Log.d(TAG, "onAddQCdata: " + qcDataModel.toString());
 
@@ -125,6 +126,7 @@ public class MainPresenterUpdated {
             qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
             qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
             qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
+            qcDataModel.setServerLotNo(lotSetShared.getGarmentSettings().getServerLotNo());
 
             dbHelper.deleteGarmentDefectEntry(qcDataModel);
 
@@ -184,7 +186,7 @@ public class MainPresenterUpdated {
 
         Gson gson = new Gson();
         String exportData = gson.toJson(qcDataModelList);
-        //Log.e("TAG_CSV_JSON", "sendjsonData: " + exportData);
+//        Log.e("TAG_CSV_JSON", "sendjsonData: " + exportData);
 
         Call<BarcodeAPIResponseModel> call = apiService.sendCSVDataUpdated(exportData);
         call.enqueue(new Callback<BarcodeAPIResponseModel>() {
@@ -243,7 +245,8 @@ public class MainPresenterUpdated {
                 "Size.><." +
                 "OperatorID.><." +
                 "MachineID.><." +
-                "UserID--";
+                "UserID.><." +
+                "ServerLotNo--";
         headerList = new ArrayList<>();
         headerList.add(header);
 
@@ -337,6 +340,7 @@ public class MainPresenterUpdated {
             qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
             qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
             qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
+            qcDataModel.setServerLotNo(lotSetShared.getGarmentSettings().getServerLotNo());
             dbHelper.insertNoDefect(qcDataModel);
             saveQCDataIntoCSV(dbHelper.getAllQCDataModels(uuidsHared.getTimeStamp(), getDate()));
 

@@ -35,6 +35,7 @@ public class QCDataModel {
     private String operatorID;
     private String machineID;
     private String userID;
+    private String serverLotNo;
 
     public QCDataModel() {
     }
@@ -279,6 +280,14 @@ public class QCDataModel {
         this.userID = userID;
     }
 
+    public String getServerLotNo() {
+        return serverLotNo;
+    }
+
+    public void setServerLotNo(String serverLotNo) {
+        this.serverLotNo = serverLotNo;
+    }
+
     @Override
     public String toString() {
         return "QCDataModel{" +
@@ -304,6 +313,7 @@ public class QCDataModel {
                 ", operatorID='" + operatorID + '\'' +
                 ", machineID='" + machineID + '\'' +
                 ", userID='" + userID + '\'' +
+                ", serverLotNo='" + serverLotNo + '\'' +
                 '}';
     }
 
@@ -335,6 +345,7 @@ public class QCDataModel {
                 size + ".><." +
                 operatorID + ".><." +
                 machineID + ".><." +
-                userID + "--";
+                userID + ".><." +
+                serverLotNo + "--";
     }
 }

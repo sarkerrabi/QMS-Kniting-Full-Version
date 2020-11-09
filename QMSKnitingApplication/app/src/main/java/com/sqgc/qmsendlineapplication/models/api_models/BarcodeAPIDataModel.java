@@ -16,64 +16,70 @@ public class BarcodeAPIDataModel {
 
     @SerializedName("StyleID")
     @Expose
-    private Integer styleID;
+    public Integer styleID;
     @SerializedName("MasterBarcodeId")
     @Expose
-    private Integer masterBarcodeId;
+    public Integer masterBarcodeId;
     @SerializedName("BundleNo")
     @Expose
-    private Integer bundleNo;
+    public Integer bundleNo;
     @SerializedName("Status")
     @Expose
-    private Boolean status;
+    public Boolean status;
     @SerializedName("StyleName")
     @Expose
-    private String styleName;
+    public String styleName;
+    @SerializedName("MachineId")
+    @Expose
+    public String machineId;
+    @SerializedName("LotNo")
+    @Expose
+    public String lotNo;
     @SerializedName("BusinessUnitName")
     @Expose
-    private String businessUnitName;
+    public String businessUnitName;
     @SerializedName("BarcodeNumber")
     @Expose
-    private Object barcodeNumber;
+    public Object barcodeNumber;
     @SerializedName("BuyerID")
     @Expose
-    private Integer buyerID;
+    public Integer buyerID;
     @SerializedName("BuyerName")
     @Expose
-    private String buyerName;
+    public String buyerName;
     @SerializedName("BusinessUnitId")
     @Expose
-    private Integer businessUnitId;
+    public Integer businessUnitId;
     @SerializedName("SelectDate")
     @Expose
-    private Object selectDate;
+    public Object selectDate;
     @SerializedName("PONumber")
     @Expose
-    private String pONumber;
+    public String pONumber;
     @SerializedName("BundleSize")
     @Expose
-    private String bundleSize;
+    public String bundleSize;
     @SerializedName("Color")
     @Expose
-    private String color;
+    public String color;
     @SerializedName("BatchQuantity")
     @Expose
-    private Integer batchQuantity;
+    public Integer batchQuantity;
     @SerializedName("CutNo")
     @Expose
-    private Integer cutNo;
+    public Integer cutNo;
     @SerializedName("ShadeNO")
     @Expose
-    private Integer shadeNO;
+    public Integer shadeNO;
     @SerializedName("ProductName")
     @Expose
-    private Object productName;
+    public Object productName;
     @SerializedName("NoOfBundle")
     @Expose
-    private Integer noOfBundle;
+    public Integer noOfBundle;
     @SerializedName("OperationSMV")
     @Expose
-    private String operationSMV;
+    public String operationSMV;
 
     public Integer getStyleID() {
         return styleID;
@@ -233,5 +239,21 @@ public class BarcodeAPIDataModel {
 
     public void setOperationSMV(String operationSMV) {
         this.operationSMV = operationSMV;
+    }
+
+    public String getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
+    }
+
+    public String getLotNo() {
+        return lotNo;
+    }
+
+    public void setLotNo(String lotNo) {
+        this.lotNo = lotNo;
     }
 }

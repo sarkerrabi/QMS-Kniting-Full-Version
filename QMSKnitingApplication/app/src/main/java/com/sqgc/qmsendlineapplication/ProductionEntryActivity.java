@@ -147,6 +147,13 @@ public class ProductionEntryActivity extends AppCompatActivity implements Produc
         tvBatchQty.setText(barcodeAPIDataModel.getBatchQuantity().toString());
         garmentsBundleSettings.setBatchQty(String.valueOf(barcodeAPIDataModel.getBatchQuantity()));
 
+        //machine id
+        etMachineId.setText(String.valueOf(barcodeAPIDataModel.getMachineId()));
+        garmentsBundleSettings.setMachineID(String.valueOf(barcodeAPIDataModel.getMachineId()));
+
+        //server lot no
+        garmentsBundleSettings.setServerLotNo(String.valueOf(barcodeAPIDataModel.getLotNo()));
+
 
     }
 

@@ -46,9 +46,9 @@ public class ManualMainPresenter {
     List<String> dataList;
     LotSetShared lotSetShared;
     UUIDSHared uuidsHared;
-    private ManualMainView mainView;
-    private Context context;
-    private DBHelper dbHelper;
+    private final ManualMainView mainView;
+    private final Context context;
+    private final DBHelper dbHelper;
     private ApiServiceUpdated apiService;
 
     public ManualMainPresenter(ManualMainView mainView, Context context, Activity activity) {
@@ -272,6 +272,7 @@ public class ManualMainPresenter {
             qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
             qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
             qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
+            qcDataModel.setServerLotNo(lotSetShared.getGarmentSettings().getServerLotNo());
             dbHelper.insertNoDefect(qcDataModel);
             saveQCDataIntoCSV(dbHelper.getAllQCDataModels(uuidsHared.getTimeStamp(), getDate()));
 

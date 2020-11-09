@@ -43,6 +43,8 @@ public class ManualEntryActivity extends AppCompatActivity {
     AutoCompleteTextView actvPo;
     @BindView(R.id.actv_size)
     AutoCompleteTextView actvSize;
+    @BindView(R.id.actv_lot_no)
+    AutoCompleteTextView actvLotNo;
     @BindView(R.id.actv_color)
     AutoCompleteTextView actvColor;
     @BindView(R.id.actv_batch_qty)
@@ -345,6 +347,13 @@ public class ManualEntryActivity extends AppCompatActivity {
             return;
         }
         garmentsBundleSettings.setSize(actvSize.getText().toString());
+
+        //size
+        if (actvLotNo.getText().toString().isEmpty()) {
+            actvSize.setError("Lot No is required*");
+            return;
+        }
+        garmentsBundleSettings.setServerLotNo(actvLotNo.getText().toString());
 
 
         //color

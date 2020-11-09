@@ -20,8 +20,10 @@ public class GarmentsBundleSettings {
     private Buyer buyer;
     private PO po;
     private String smv;
-    private String operatorID = "1001";
-    private String machineID = "2002";
+    private String operatorID = "na";
+    private String machineID = "na";
+    private String serverLotNo = "na";
+
 
     public GarmentsBundleSettings() {
     }
@@ -120,5 +122,13 @@ public class GarmentsBundleSettings {
 
     public void setStyleCategory(String styleCategory) {
         this.styleCategory = styleCategory;
+    }
+
+    public String getServerLotNo() {
+        return serverLotNo;
+    }
+
+    public void setServerLotNo(String serverLotNo) {
+        this.serverLotNo = serverLotNo;
     }
 }
