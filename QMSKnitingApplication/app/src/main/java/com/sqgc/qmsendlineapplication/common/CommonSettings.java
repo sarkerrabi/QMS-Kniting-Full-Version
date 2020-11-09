@@ -15,11 +15,17 @@ import java.util.Date;
 public class CommonSettings {
 
     public static final String PREFS_NAME = "INPUT_HISTORY_SHARED_DB";
-    //DB Static
+    //db static
     public static String sharedPrefName = "QMSELCacheDB";
     public static String sharedCleanPrefName = "DataCleanCacheDB";
     public static String sharedUUIDPrefName = "QMSELCacheDeviceID";
     public static String sharedSelectionSettings = "QMSELSettingsDB";
+
+    //time settings
+    public static int MORNING_HR = 8;
+    public static int MORNING_MIN = 30;
+    public static int EVENING_HR = 20;
+    public static int EVENING_MIN = 30;
 
 //    public static List<QCDataModel> qcDataModelList = new ArrayList<>();
 

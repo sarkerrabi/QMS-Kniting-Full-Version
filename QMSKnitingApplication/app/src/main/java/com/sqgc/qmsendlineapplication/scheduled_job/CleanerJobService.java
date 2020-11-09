@@ -13,16 +13,30 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.sqgc.qmsendlineapplication.LoginActivity;
+import com.sqgc.qmsendlineapplication.models.QCDataModel;
+import com.sqgc.qmsendlineapplication.models.api_models.BarcodeAPIResponseModel;
+import com.sqgc.qmsendlineapplication.network.ApiClient;
+import com.sqgc.qmsendlineapplication.preknit.database.DBHelper;
+import com.sqgc.qmsendlineapplication.services.ApiServiceUpdated;
 import com.sqgc.qmsendlineapplication.sharedDB.CleanTotalSetShared;
+import com.sqgc.qmsendlineapplication.sharedDB.UUIDSHared;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CleanerJobService extends BroadcastReceiver {
 
     CleanTotalSetShared cleanTotalSetShared;
+    private ApiServiceUpdated apiService;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -78,11 +92,15 @@ public class CleanerJobService extends BroadcastReceiver {
 
 
     private void clearDBData(Context context) {
+        sendCSVData(context);
+
         com.sqgc.qmsendlineapplication.preknit.database.DBHelper dbHelper = new com.sqgc.qmsendlineapplication.preknit.database.DBHelper(context);
         dbHelper.clearEntryData();
 
         com.sqgc.qmsendlineapplication.databases.DBHelper myDB = new com.sqgc.qmsendlineapplication.databases.DBHelper(context);
         myDB.clearDBEntryData();
+
+        Toast.makeText(context, "Data cleared successfully", Toast.LENGTH_SHORT).show();
 
         Log.e("TAGJOB", "clearDBData: " + context.getClass().getSimpleName());
 
@@ -91,6 +109,55 @@ public class CleanerJobService extends BroadcastReceiver {
         i.setClassName(context.getPackageName(), LoginActivity.class.getName());
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
+
+    }
+
+
+    public void sendCSVData(Context context) {
+        DBHelper dbHelper = new DBHelper(context);
+        UUIDSHared uuidsHared = new UUIDSHared(context);
+
+        if (apiService == null) {
+            apiService = ApiClient.getRetrofit().create(ApiServiceUpdated.class);
+        }
+        List<QCDataModel> qcDataModelList = dbHelper.getAllQCDataModelsForSendingToDB(uuidsHared.getTimeStamp(), getDate());
+
+        Gson gson = new Gson();
+        String exportData = gson.toJson(qcDataModelList);
+//        Log.e("TAG_CSV_JSON", "sendjsonData: " + exportData);
+
+        Call<BarcodeAPIResponseModel> call = apiService.sendCSVDataUpdated(exportData);
+        call.enqueue(new Callback<BarcodeAPIResponseModel>() {
+            @Override
+            public void onResponse(Call<BarcodeAPIResponseModel> call, Response<BarcodeAPIResponseModel> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getIsSuccess()) {
+                            Log.e("TAGJOB", "Sending Data successful");
+                        } else {
+                            Log.e("TAGJOB", "Failed to insert data");
+                        }
+
+                    } else {
+                        Log.e("TAGJOB", "ERROR 2001: Server Error!! Please contact with developers");
+                    }
+
+                } else {
+                    //mainView.onSendCSVDataFailed("ERROR 2002: Server Error!! Please contact with developer");
+                    Log.e("TAGJOB", response.message());
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BarcodeAPIResponseModel> call, Throwable t) {
+                Log.e("TAGJOB", t.getLocalizedMessage());
+                //Toast.makeText(context, t.getCause()+"", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
     }
 }

@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.sqgc.qmsendlineapplication.common.CommonSettings;
 import com.sqgc.qmsendlineapplication.databases.DBHelper;
 import com.sqgc.qmsendlineapplication.models.api_models.LoginResponse;
 import com.sqgc.qmsendlineapplication.network.ApiClient;
@@ -116,8 +117,8 @@ public class LoginPresenter {
 
     private void setMorningAlarm() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.HOUR_OF_DAY, CommonSettings.MORNING_HR);
+        calendar.set(Calendar.MINUTE, CommonSettings.MORNING_MIN);
         calendar.set(Calendar.SECOND, 0);
         long time = calendar.getTimeInMillis();
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -134,8 +135,8 @@ public class LoginPresenter {
 
     private void setEveningAlarm() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.HOUR_OF_DAY, CommonSettings.EVENING_HR);
+        calendar.set(Calendar.MINUTE, CommonSettings.EVENING_MIN);
         calendar.set(Calendar.SECOND, 0);
         long time = calendar.getTimeInMillis();
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
