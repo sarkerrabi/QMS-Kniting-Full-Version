@@ -27,11 +27,11 @@ import retrofit2.Response;
 
 
 public class FloorInfoPresenter {
-    private FloorInfoView floorInfoView;
-    private Context context;
-    private Activity activity;
+    private final FloorInfoView floorInfoView;
+    private final Context context;
+    private final Activity activity;
     private ApiService apiService;
-    private DBHelper myDBHelper;
+    private final DBHelper myDBHelper;
 
 
     public FloorInfoPresenter(FloorInfoView floorInfoView, Context context, Activity activity) {
@@ -121,8 +121,19 @@ public class FloorInfoPresenter {
 
     private int getBarcodeNoFromString(String barcode) {
         String[] bcodes = barcode.split(",");
-        return Integer.parseInt(bcodes[0]);
+        if (barcode != null) {
+            if (barcode.contains(",")) {
+                return Integer.parseInt(bcodes[0]);
+            } else {
+                floorInfoView.onBarcodeFailed("Barcode no error. Please check barcode no. and try again.");
+                return 0;
 
+            }
+
+        } else {
+            floorInfoView.onBarcodeFailed("Barcode is blank. Please check barcode no. and try again.");
+            return 0;
+        }
 
     }
 

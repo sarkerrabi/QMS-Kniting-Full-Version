@@ -40,6 +40,7 @@ import static com.sqgc.qmsendlineapplication.common.CommonSettings.getCurrentTim
 import static com.sqgc.qmsendlineapplication.common.CommonSettings.getDate;
 
 public class MainPresenterUpdated {
+    private static final String TAG = "MainPresenterUpdated";
     public final int WRITE_PERMISSON_REQUEST_CODE = 1;
     EasyCsv easyCsv;
     Activity activity;
@@ -296,6 +297,17 @@ public class MainPresenterUpdated {
 
     }
 
+    public void updateServerSyncData(List<QCDataModel> qcDataModelList, BarcodeAPIResponseModel barcodeAPIResponseModel) {
+        for (QCDataModel qcDataModel :
+                qcDataModelList) {
+            dbHelper.updateServerSyncData(qcDataModel);
+
+        }
+        mainView.onUpdateLocalDBSuccessfulUpdated(barcodeAPIResponseModel.getMsg());
+
+
+    }
+
     public void deleteDataFromLocalDBUpdated(int lotNo, int garmentNo) {
         String date = getDate();
         List<Integer> ids = dbHelper.getLastEntryID(lotNo, garmentNo, date);
@@ -314,7 +326,7 @@ public class MainPresenterUpdated {
     }
 
     public void setTotalGarmentsCount() {
-        mainView.onTotalGarmentCountReadyUpdated(dbHelper.totalGarmentsEntryInADay(getDate()));
+        mainView.onTotalGarmentCountReadyUpdated(dbHelper.totalServerGarmentsEntry());
     }
 
     public void checkNoDefectEntry() {
@@ -377,7 +389,7 @@ public class MainPresenterUpdated {
 
                 for (int i = 0; i < noOfEntry; i++) {
                     lotSetShared.saveGarmentsCount();
-                    checkNoDefectEntry();
+                    checkServerNoDefectEntry();
 
                 }
                 saveQCDataIntoCSV(dbHelper.getAllQCDataModels(uuidsHared.getTimeStamp(), getDate()));
@@ -401,5 +413,197 @@ public class MainPresenterUpdated {
         lotSetShared.decreaseGarmentsCount();
         mainView.onUpdateGarmentsCountUpdated();
         saveQCDataIntoCSV(dbHelper.getAllQCDataModels(uuidsHared.getTimeStamp(), getDate()));
+    }
+
+    public void insertDefectIntoServerTempDataTable(Defect defect) {
+        DBHelper dbHelper = new DBHelper(context);
+        if (lotSetShared.getGarmentSettings() != null) {
+            GarmentsBundleSettings garmentsBundleSettings = lotSetShared.getGarmentSettings();
+            QCDataModel qcDataModel = new QCDataModel(
+                    lotSetShared.getGarmentsCount() + 1, lotSetShared.getGarmentPosition(), defect, garmentsBundleSettings.getColor());
+            qcDataModel.setSize(lotSetShared.getGarmentSettings().getSize());
+            qcDataModel.setDefectPos(defect.getDefectPosName());
+            qcDataModel.setBatchQty(lotSetShared.getGarmentSettings().getBatchQty());
+
+            qcDataModel.setStyleCat("Cardigan");
+            qcDataModel.setLotNo(new UUIDSHared(context).getLotNo());
+            qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
+            qcDataModel.setDate(getDate());
+            qcDataModel.setTime(getCurrentTime());
+            qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
+
+            qcDataModel.setLine(lotSetShared.getFloorSetting().getLine().getName());
+            qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit().getName() == null ? "Newton" : lotSetShared.getFloorSetting().getProductionUnit().getName());
+            qcDataModel.setBuyerName(lotSetShared.getGarmentSettings().getBuyer().getName());
+            qcDataModel.setPo(lotSetShared.getGarmentSettings().getPo().getName());
+            qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
+            qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
+            qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
+            qcDataModel.setServerLotNo(lotSetShared.getGarmentSettings().getServerLotNo());
+
+
+            dbHelper.insertServerGarmentsDefectEntry(qcDataModel);
+
+
+        }
+    }
+
+    public void deleteDefectIntoServerTempDataTable(Defect defect) {
+        if (lotSetShared.getGarmentSettings() != null) {
+            GarmentsBundleSettings garmentsBundleSettings = lotSetShared.getGarmentSettings();
+            QCDataModel qcDataModel = new QCDataModel(
+                    lotSetShared.getGarmentsCount() + 1, lotSetShared.getGarmentPosition(), defect, garmentsBundleSettings.getColor());
+            qcDataModel.setSize(lotSetShared.getGarmentSettings().getSize());
+            qcDataModel.setDefectPos(defect.getDefectPosName());
+            qcDataModel.setBatchQty(lotSetShared.getGarmentSettings().getBatchQty());
+            qcDataModel.setLotNo(new UUIDSHared(context).getLotNo());
+            qcDataModel.setStyleCat("Cardigan");
+            qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
+            qcDataModel.setDate(getDate());
+            qcDataModel.setTime(getCurrentTime());
+            qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
+            qcDataModel.setLine(lotSetShared.getFloorSetting().getLine().getName());
+            qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit().getName());
+            qcDataModel.setBuyerName(lotSetShared.getGarmentSettings().getBuyer().getName());
+            qcDataModel.setPo(lotSetShared.getGarmentSettings().getPo().getName());
+            qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
+            qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
+            qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
+            qcDataModel.setServerLotNo(lotSetShared.getGarmentSettings().getServerLotNo());
+
+            dbHelper.deleteServerGarmentDefectEntry(qcDataModel);
+
+
+        }
+
+    }
+
+    public void checkServerNoDefectEntry() {
+        boolean isFound = dbHelper.isFoundServerGarmentNo(uuidsHared.getLotNo(), lotSetShared.getGarmentsCount(), getDate());
+
+        if (!isFound) {
+            QCDataModel qcDataModel = new QCDataModel();
+            qcDataModel.setLotNo(uuidsHared.getLotNo());
+            qcDataModel.setGarmentNo(lotSetShared.getGarmentsCount());
+            qcDataModel.setBatchQty(lotSetShared.getGarmentSettings().getBatchQty());
+            qcDataModel.setBuyerName(lotSetShared.getGarmentSettings().getBuyer().getName());
+            qcDataModel.setColor(lotSetShared.getGarmentSettings().getColor());
+            qcDataModel.setDate(getDate());
+            qcDataModel.setGarmentPos(lotSetShared.getGarmentPosition());
+            qcDataModel.setLine(lotSetShared.getFloorSetting().getLine().getName());
+            qcDataModel.setSize(lotSetShared.getGarmentSettings().getSize());
+            qcDataModel.setStyleCat("Cardigan");
+            qcDataModel.setUserID(uuidsHared.getUserData().getUserName());
+            qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
+            qcDataModel.setPo(lotSetShared.getGarmentSettings().getPo().getName());
+            qcDataModel.setTime(getCurrentTime());
+            qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit().getName() == null ? "Newton" : lotSetShared.getFloorSetting().getProductionUnit().getName());
+            qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
+            qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
+            qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
+            qcDataModel.setServerLotNo(lotSetShared.getGarmentSettings().getServerLotNo());
+            dbHelper.insertServerNoDefect(qcDataModel);
+            //saveQCDataIntoCSV(dbHelper.getAllQCDataModels(uuidsHared.getTimeStamp(), getDate()));
+
+
+        }
+
+
+    }
+
+    public void undoServerGarments(int lotNo, int garmentNo) {
+        List<QCDataModel> qcDataModelList = dbHelper.getAllServerQCDataModelsByGarmentNoForDeletingFromServer(uuidsHared.getTimeStamp(), garmentNo, lotNo, getDate());
+
+        Gson gson = new Gson();
+        String undoGarmentsData = gson.toJson(qcDataModelList);
+        Call<BarcodeAPIResponseModel> call = apiService.deleteDataFromServerUpdated(undoGarmentsData);
+        call.enqueue(new Callback<BarcodeAPIResponseModel>() {
+            @Override
+            public void onResponse(Call<BarcodeAPIResponseModel> call, Response<BarcodeAPIResponseModel> response) {
+
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getIsSuccess()) {
+                            mainView.onDeleteDataSuccessfulUpdated(response.body(), lotNo, garmentNo);
+                        } else {
+                            mainView.onDeleteDataFailedUpdated("Failed to delete data");
+                        }
+
+                    } else {
+                        mainView.onDeleteDataFailedUpdated("ERROR 2001: Server Error!! Please contact with developers");
+                    }
+
+                } else {
+                    //mainView.onSendCSVDataFailed("ERROR 2002: Server Error!! Please contact with developer");
+                    mainView.onDeleteDataFailedUpdated(response.message());
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BarcodeAPIResponseModel> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+    public void sendServerQCTableDataToServer() {
+        //saveQCDataIntoCSV(dbHelper.getAllServerQCDataModelsForSendingToDB(uuidsHared.getTimeStamp(), getDate()));
+
+        List<QCDataModel> qcDataModelList = dbHelper.getAllServerQCDataModelsForSendingToDB(uuidsHared.getTimeStamp(), getDate());
+
+        Gson gson = new Gson();
+        String exportData = gson.toJson(qcDataModelList);
+//        Log.e("TAG_CSV_JSON", "send json Data: " + exportData);
+
+        Call<BarcodeAPIResponseModel> call = apiService.sendCSVDataUpdated(exportData);
+        call.enqueue(new Callback<BarcodeAPIResponseModel>() {
+            @Override
+            public void onResponse(Call<BarcodeAPIResponseModel> call, Response<BarcodeAPIResponseModel> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getIsSuccess()) {
+                            mainView.onSendCSVDataIntoServerSuccessfullyUpdated(response.body(), qcDataModelList);
+                        } else {
+                            mainView.onSendCSVDataFailedUpdated("Failed to insert data");
+                        }
+
+                    } else {
+                        mainView.onSendCSVDataFailedUpdated("ERROR 2001: Server Error!! Please contact with developers");
+                    }
+
+                } else {
+                    //mainView.onSendCSVDataFailed("ERROR 2002: Server Error!! Please contact with developer");
+                    mainView.onSendCSVDataFailedUpdated(response.message());
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BarcodeAPIResponseModel> call, Throwable t) {
+                mainView.onSendCSVDataFailedUpdated(t.getLocalizedMessage());
+                //Toast.makeText(context, t.getCause()+"", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
+
+
+    public void deleteDataFromLocalServerTableDB(int lotNo, int garmentNo) {
+        String date = getDate();
+        dbHelper.deleteServerTable(lotNo, garmentNo, date);
+
+
+        lotSetShared.decreaseGarmentsCount();
+        mainView.onUpdateGarmentsCountUpdated();
+        saveQCDataIntoCSV(dbHelper.getAllQCDataModels(uuidsHared.getTimeStamp(), getDate()));
+
     }
 }

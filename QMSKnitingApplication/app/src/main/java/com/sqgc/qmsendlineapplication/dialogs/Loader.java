@@ -50,14 +50,16 @@ public class Loader {
                 .centerCrop()
                 .into(gifImageView);
 
-        //...finaly show it
+        //...finally show it
         dialog.show();
     }
 
     //..also create a method which will hide the dialog when some work is done
     public void hideDialog() {
         if (dialog != null) {
-            dialog.dismiss();
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
 }

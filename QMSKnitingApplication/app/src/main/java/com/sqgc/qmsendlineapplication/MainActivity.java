@@ -59,6 +59,8 @@ import static com.sqgc.qmsendlineapplication.common.CommonSettings.getDate;
 
 public class MainActivity extends AppCompatActivity implements MainView, Connectable, Bindable, Disconnectable, MainViewUpdated {
 
+    private static final String TAG = "MainActivity";
+
     List<TextView> textViewList = new ArrayList<>();
 
     GridLayout frontGridLayout, backGridLayout;
@@ -211,8 +213,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
     public void onAddQCdata(Defect defect) {
         //mainPresenter.insertDefectIntoDataTable(defect);
 
+        // Log.e(TAG, "onAddQCdata: " + defect.getName() + "Defect POs Name: "+ defect.getDefectPosName()+ " defect Count. "+ defect.getDefectCount());
+
         //preknit
-        mainPresenterUpdated.insertDefectIntoPreDataTable(defect);
+//        mainPresenterUpdated.insertDefectIntoPreDataTable(defect);
+        mainPresenterUpdated.insertDefectIntoServerTempDataTable(defect);
 
 
     }
@@ -222,7 +227,8 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         //mainPresenter.deleteDefectInfoDataTable(defect);
 
         //preknit
-        mainPresenterUpdated.deleteDefectInfoDataTable(defect);
+        //mainPresenterUpdated.deleteDefectInfoDataTable(defect);
+        mainPresenterUpdated.deleteDefectIntoServerTempDataTable(defect);
 
     }
 
@@ -268,7 +274,8 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         Toast.makeText(this, barcodeAPIResponseModel.getMsg(), Toast.LENGTH_SHORT).show();
         if (qcDataModelList != null) {
             if (!qcDataModelList.isEmpty()) {
-                mainPresenterUpdated.updateSyncData(qcDataModelList, barcodeAPIResponseModel);
+//                mainPresenterUpdated.updateSyncData(qcDataModelList, barcodeAPIResponseModel);
+                mainPresenterUpdated.updateServerSyncData(qcDataModelList, barcodeAPIResponseModel);
             }
         }
     }
@@ -283,7 +290,9 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
     @Override
     public void onDeleteDataSuccessfulUpdated(BarcodeAPIResponseModel barcodeAPIResponseModel, int lotNo, int garmentNo) {
         Toast.makeText(this, barcodeAPIResponseModel.getMsg(), Toast.LENGTH_SHORT).show();
-        mainPresenterUpdated.deleteDataFromLocalDB(lotNo, garmentNo);
+        //mainPresenterUpdated.deleteDataFromLocalDB(lotNo, garmentNo);
+
+        mainPresenterUpdated.deleteDataFromLocalServerTableDB(lotNo, garmentNo);
     }
 
     //preknit
@@ -462,7 +471,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 
         //mainPresenter.undoAGarments(uuidsHared.getLotNo(), lotSetShared.getGarmentsCount());
         //preknit
-        mainPresenterUpdated.undoAGarments(uuidsHared.getLotNo(), lotSetShared.getGarmentsCount());
+//        mainPresenterUpdated.undoAGarments(uuidsHared.getLotNo(), lotSetShared.getGarmentsCount());
+
+        //server_table
+        mainPresenterUpdated.undoServerGarments(uuidsHared.getLotNo(), lotSetShared.getGarmentsCount());
 
 
     }
@@ -480,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 //            mainPresenter.checkNoDefectEntry();
 
             //preknit
-            mainPresenterUpdated.checkNoDefectEntry();
+            mainPresenterUpdated.checkServerNoDefectEntry();
 
         } else {
             int value = Integer.parseInt(btNextCountGarment.getText().toString());
@@ -515,8 +527,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         //preknit
         mainPresenterUpdated.setTotalGarmentsCount();
         //preknit
-        mainPresenterUpdated.sendCSVData();
+//        mainPresenterUpdated.sendCSVData();
 //        mainPresenter.sendDefectData();
+
+        //server table
+        mainPresenterUpdated.sendServerQCTableDataToServer();
 
     }
 

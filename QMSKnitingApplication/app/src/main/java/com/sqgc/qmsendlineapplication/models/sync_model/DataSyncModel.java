@@ -36,17 +36,20 @@ import static com.sqgc.qmsendlineapplication.common.CommonSettings.getDate;
 public class DataSyncModel {
     LotSetShared lotSetShared;
     UUIDSHared uuidsHared;
-    private Context context;
-    private Activity activity;
+    private final Context context;
+    private final Activity activity;
     private ApiService apiService;
-    private SyncView syncView;
-    private DBHelper dbHelper;
+    private final SyncView syncView;
+    private final DBHelper dbHelper;
+    private final com.sqgc.qmsendlineapplication.preknit.database.DBHelper preknitDBHelper;
 
     public DataSyncModel(Context context, Activity activity, SyncView syncView) {
         this.context = context;
         this.activity = activity;
         this.syncView = syncView;
         dbHelper = new DBHelper(context);
+        preknitDBHelper = new com.sqgc.qmsendlineapplication.preknit.database.DBHelper(context);
+
         uuidsHared = new UUIDSHared(context);
         lotSetShared = new LotSetShared(context);
         if (apiService == null) {

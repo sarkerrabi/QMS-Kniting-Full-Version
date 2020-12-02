@@ -20,7 +20,7 @@ public class ApiClient {
     public static final String IP_URL = "http://10.12.13.163:8110";
 
     //Public IP address
-    //public static final String IP_URL = "http://119.148.12.173:8110";
+//    public static final String IP_URL = "http://119.148.12.173:8110";
 
     public static final String BASE_URL = IP_URL + "/api/BasicQMSData/";
     private static Retrofit retrofit = null;

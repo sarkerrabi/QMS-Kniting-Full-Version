@@ -80,8 +80,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:dropDownWidth="match_parent"
-                        android:entries="@android:array/phoneTypes" />
+                        android:dropDownWidth="match_parent" />
 
                 </LinearLayout>
 
@@ -119,7 +118,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:dropDownWidth="match_parent"
-                        android:entries="@android:array/organizationTypes"
                         tools:text="Sample" />
 
                 </LinearLayout>
@@ -156,8 +154,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:dropDownWidth="match_parent"
-                        android:entries="@android:array/phoneTypes" />
+                        android:dropDownWidth="match_parent" />
 
                 </LinearLayout>
             </LinearLayout>

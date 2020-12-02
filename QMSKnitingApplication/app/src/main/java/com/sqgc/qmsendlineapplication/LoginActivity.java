@@ -26,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.amitshekhar.DebugDB;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -79,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
         Log.e("DB_DEBUG", "onCreate: " + DebugDB.getAddressLog());
         loader = new Loader(LoginActivity.this);
         loginPresenter = new LoginPresenter(this, getApplicationContext(), this);
@@ -98,14 +100,18 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Conne
         uuidsHared = new UUIDSHared(getApplicationContext());
         lotSetShared = new LotSetShared(getApplicationContext());
 
+
         loginPresenter.setCleanTimer();
 
         if (uuidsHared.getUniqueID() == null) {
             try {
                 uuidsHared.saveUniqueID();
+                FirebaseCrashlytics.getInstance().setUserId(String.valueOf(uuidsHared.getUniqueID()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            FirebaseCrashlytics.getInstance().setUserId(String.valueOf(uuidsHared.getUniqueID()));
         }
 
         uuidsHared.saveScreenHeight(height);

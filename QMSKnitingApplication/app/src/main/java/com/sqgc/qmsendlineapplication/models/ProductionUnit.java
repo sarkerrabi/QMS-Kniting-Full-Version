@@ -11,7 +11,7 @@ package com.sqgc.qmsendlineapplication.models;
 
 public class ProductionUnit {
     private int id;
-    private String name;
+    private String name = "Newton";
 
 
     public ProductionUnit(int id, String name) {

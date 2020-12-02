@@ -154,5 +154,31 @@ public class DBCreateTableQueries {
             "\t\"Line_ID\"\tINTEGER NOT NULL\n" +
             ");";
 
+    public static String createServerQCGarmentDataTable = "CREATE TABLE \"ServerQCGarmentsDefect\" (\n" +
+            "\"ID\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
+            "\"Unit\" TEXT NOT NULL,\n" +
+            "\"Line\"\tTEXT NOT NULL,\n" +
+            "\"Date\"\tTEXT NOT NULL,\n" +
+            "\"Time\"\tTEXT NOT NULL,\n" +
+            "\"BuyerName\"\tTEXT NOT NULL,\n" +
+            "\"BatchQty\"\tTEXT NOT NULL,\n" +
+            "\"StyleCategory\"\tTEXT NOT NULL,\n" +
+            "\"StyleSubCategory\"\tTEXT NOT NULL,\n" +
+            "\"GarmentsNo\"\tTEXT NOT NULL,\n" +
+            "\"GarmentPos\"\tTEXT NOT NULL,\n" +
+            "\"Color\"\tTEXT NOT NULL,\n" +
+            "\"DefectName\"\tTEXT NOT NULL,\n" +
+            "\"DefectPos\"\tTEXT NOT NULL,\n" +
+            "\"DefectCount\" TEXT NOT NULL,\n" +
+            "\"Size\"\tTEXT NOT NULL,\n" +
+            "\"LotNo\"\tINTEGER NOT NULL,\n" +
+            "\"PO\"\tTEXT NOT NULL,\n" +
+            "\"SMV\"\tTEXT NOT NULL,\n" +
+            "\"isSynced\"\tINTEGER NOT NULL DEFAULT 0,\n" +
+            "\"OperatorID\"\tTEXT NOT NULL,\n" +
+            "\"MachineID\"\tTEXT NOT NULL,\n" +
+            "\"UserID\"\tTEXT NOT NULL,\n" +
+            "\"ServerLotNo\"\tTEXT NOT NULL);";
+
 
 }

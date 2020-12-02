@@ -38,11 +38,11 @@ public class DefectListByPositionTask extends AsyncTask<String, String, String> 
     int styleID = 0;
     DBHelper dbHelper;
     private ApiService apiService;
-    private Activity activity;
-    private Context context;
-    private LotSetShared lotSetShared;
-    private UUIDSHared uuidsHared;
-    private BarcodeAPIDataModel barcodeAPIDataModel;
+    private final Activity activity;
+    private final Context context;
+    private final LotSetShared lotSetShared;
+    private final UUIDSHared uuidsHared;
+    private final BarcodeAPIDataModel barcodeAPIDataModel;
 
     public DefectListByPositionTask(Activity activity, Context context, ProductionEntryView productionEntryView, int styleID, BarcodeAPIDataModel barcodeAPIDataModel) {
         this.activity = activity;
@@ -121,14 +121,17 @@ public class DefectListByPositionTask extends AsyncTask<String, String, String> 
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         uuidsHared.savePKOfBarcode(response.body().getPk());
+                        loader.hideDialog();
                         productionEntryView.onDefectListAPISavedDone();
                     } else {
+                        loader.hideDialog();
                         productionEntryView.onDefectListAPIFailed(response.message());
                     }
                 } else {
+                    loader.hideDialog();
                     productionEntryView.onDefectListAPIFailed(response.message());
                 }
-                loader.hideDialog();
+
 
             }
 

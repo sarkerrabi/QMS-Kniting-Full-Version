@@ -44,6 +44,7 @@ import static com.sqgc.qmsendlineapplication.preknit.database.DBCreateTableQueri
 import static com.sqgc.qmsendlineapplication.preknit.database.DBCreateTableQueries.createQCGarmentDataTable;
 import static com.sqgc.qmsendlineapplication.preknit.database.DBCreateTableQueries.createQCGarmentDefectCounts;
 import static com.sqgc.qmsendlineapplication.preknit.database.DBCreateTableQueries.createQCGarmentsDefect;
+import static com.sqgc.qmsendlineapplication.preknit.database.DBCreateTableQueries.createServerQCGarmentDataTable;
 import static com.sqgc.qmsendlineapplication.preknit.database.DBCreateTableQueries.createSizeTable;
 import static com.sqgc.qmsendlineapplication.preknit.database.DBCreateTableQueries.createStyleCategory;
 import static com.sqgc.qmsendlineapplication.preknit.database.DBCreateTableQueries.createStyleInLine;
@@ -71,6 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //tables
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "qms_end_knit.db";
+    private static final String TAG = "SQLITE_DB";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -92,6 +94,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(createQCGarmentsDefect);
         db.execSQL(createQCGarmentDefectCounts);
+        db.execSQL(createServerQCGarmentDataTable);
 
         db.execSQL(createProductionUnitTable);
         db.execSQL(createLineTable);
@@ -148,6 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS DEFECT");
         db.execSQL("DROP TABLE IF EXISTS QCGarmentsDefect");
         db.execSQL("DROP TABLE IF EXISTS QCGarmentDefectCounts");
+        db.execSQL("DROP TABLE IF EXISTS ServerQCGarmentsDefect");
 
         db.execSQL("DROP TABLE IF EXISTS ProductionUnit");
         db.execSQL("DROP TABLE IF EXISTS LINE");
@@ -159,6 +163,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS POsInStyle");
         db.execSQL("DROP TABLE IF EXISTS ColorsInPO");
+
 
         onCreate(db);
     }
@@ -1013,54 +1018,59 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = DBQueries.selectAllDefectListDataForSending + mydate + "' AND QCGarmentsDefect.isSynced = 0 ;";
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(sql, null);
-        if (cursor.moveToFirst()) {
-            do {
-                //"ID","Unit","Time","Date","BatchQty","BuyerName","StyleCategory","StyleSubCategory","GarmentsNo","GarmentsPos","DefectName","DefectCount","Color","DefectPos","Size"
-                //int id = Integer.parseInt(cursor.getString(0));
-                String unit = cursor.getString(0);
-                String line = cursor.getString(1);
-                String time = cursor.getString(2);
-                String date = cursor.getString(3);
-                String batchQty = cursor.getString(4);
-                String buyerName = cursor.getString(5);
-                String styleCat = cursor.getString(6);
-                String styleSubCat = cursor.getString(7);
-                int garmentNo = Integer.parseInt(cursor.getString(8));
-                String garmentPos = cursor.getString(9);
-                String defectName = cursor.getString(10);
-                int defectCount = Integer.parseInt(cursor.getString(11));
-                String color = cursor.getString(12);
-                String defectPos = cursor.getString(13);
-                String size = cursor.getString(14);
-                int lotNo = Integer.parseInt(cursor.getString(15));
-                String po = cursor.getString(16);
-                String smv = cursor.getString(17);
-                int id = Integer.parseInt(cursor.getString(18));
-                String operatorID = cursor.getString(19);
-                String machineID = cursor.getString(20);
-                String userID = cursor.getString(21);
-                String serverLotNo = cursor.getString(22);
+        try {
 
-                Defect defect = new Defect(defectName, defectCount);
+            Cursor cursor = db.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    //"ID","Unit","Time","Date","BatchQty","BuyerName","StyleCategory","StyleSubCategory","GarmentsNo","GarmentsPos","DefectName","DefectCount","Color","DefectPos","Size"
+                    //int id = Integer.parseInt(cursor.getString(0));
+                    String unit = cursor.getString(0);
+                    String line = cursor.getString(1);
+                    String time = cursor.getString(2);
+                    String date = cursor.getString(3);
+                    String batchQty = cursor.getString(4);
+                    String buyerName = cursor.getString(5);
+                    String styleCat = cursor.getString(6);
+                    String styleSubCat = cursor.getString(7);
+                    int garmentNo = Integer.parseInt(cursor.getString(8));
+                    String garmentPos = cursor.getString(9);
+                    String defectName = cursor.getString(10);
+                    int defectCount = Integer.parseInt(cursor.getString(11));
+                    String color = cursor.getString(12);
+                    String defectPos = cursor.getString(13);
+                    String size = cursor.getString(14);
+                    int lotNo = Integer.parseInt(cursor.getString(15));
+                    String po = cursor.getString(16);
+                    String smv = cursor.getString(17);
+                    int id = Integer.parseInt(cursor.getString(18));
+                    String operatorID = cursor.getString(19);
+                    String machineID = cursor.getString(20);
+                    String userID = cursor.getString(21);
+                    String serverLotNo = cursor.getString(22);
 
-                QCDataModel qcDataModel = new QCDataModel(timeStamp, lotNo,
-                        unit, line, time, date, batchQty, buyerName,
-                        styleCat, styleSubCat, garmentNo, garmentPos,
-                        defect, color, defectPos, size, po, smv
-                );
-                qcDataModel.setGarmentsID();
+                    Defect defect = new Defect(defectName, defectCount);
 
-                qcDataModel.setId(id);
-                qcDataModel.setMachineID(machineID);
-                qcDataModel.setOperatorID(operatorID);
-                qcDataModel.setUserID(userID);
-                qcDataModel.setServerLotNo(serverLotNo);
+                    QCDataModel qcDataModel = new QCDataModel(timeStamp, lotNo,
+                            unit, line, time, date, batchQty, buyerName,
+                            styleCat, styleSubCat, garmentNo, garmentPos,
+                            defect, color, defectPos, size, po, smv
+                    );
+                    qcDataModel.setGarmentsID();
 
-                qcDataModelArrayList.add(qcDataModel);
-            } while (cursor.moveToNext());
+                    qcDataModel.setId(id);
+                    qcDataModel.setMachineID(machineID);
+                    qcDataModel.setOperatorID(operatorID);
+                    qcDataModel.setUserID(userID);
+                    qcDataModel.setServerLotNo(serverLotNo);
+
+                    qcDataModelArrayList.add(qcDataModel);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        cursor.close();
 
         return qcDataModelArrayList;
 
@@ -1081,61 +1091,92 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void updateServerSyncData(QCDataModel qcDataModel) {
+
+        String updateSql = "UPDATE ServerQCGarmentsDefect SET isSynced = 1 WHERE \n" +
+                "\"Unit\" = '" + qcDataModel.getUnit() + "' AND \n" +
+                "\"Date\" = '" + qcDataModel.getDate() + "' AND \n" +
+                "\"Time\" = '" + qcDataModel.getTime() + "' AND \n" +
+                "\"Line\" = '" + qcDataModel.getLine() + "' AND \n" +
+                "\"BuyerName\" = '" + qcDataModel.getBuyerName() + "' AND \n" +
+                "\"BatchQty\" = '" + qcDataModel.getBatchQty() + "' AND \n" +
+                "\"StyleCategory\" = \"" + qcDataModel.getStyleCat() + "\" AND \"" +
+                "StyleSubCategory\" =\"" + qcDataModel.getStyleSubCat() + "\" AND \n" +
+                " \"GarmentPos\" = '" + qcDataModel.getGarmentPos() + "' AND \n" +
+                " \"Color\"  = '" + qcDataModel.getColor() + "' AND  \n" +
+                " \"DefectPos\" = '" + qcDataModel.getDefectPos() + "' AND \n" +
+                " \"DefectName\" = '" + qcDataModel.getDefect().getName() + "' AND \n" +
+                " \"PO\" = '" + qcDataModel.getPo() + "' AND \n" +
+                " \"LotNo\" = '" + qcDataModel.getLotNo() + "' AND \n" +
+                " \"Size\"= '" + qcDataModel.getSize() + "';";
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL(updateSql);
+            Log.d("SQLITE_DB", "update sync data: ");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "update sync data: ");
+        }
+    }
 
     public List<QCDataModel> getAllQCDataModelsByGarmentNoForDeletingFromServer(String timeStamp, int mGarmentNo, int myLotNo, String myDate) {
         List<QCDataModel> qcDataModelArrayList = new ArrayList<>();
         String sql = DBQueries.selectAllDefectListDataByGarmentsNoForDeleting + mGarmentNo + " AND LotNo = " + myLotNo + " AND Date = '" + myDate + "';";
-        SQLiteDatabase db = this.getReadableDatabase();
 
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    //"ID","Unit","Time","Date","BatchQty","BuyerName","StyleCategory","StyleSubCategory","GarmentsNo","GarmentsPos","DefectName","DefectCount","Color","DefectPos","Size"
+                    //int id = Integer.parseInt(cursor.getString(0));
+                    String unit = cursor.getString(0);
+                    String line = cursor.getString(1);
+                    String time = cursor.getString(2);
+                    String date = cursor.getString(3);
+                    String batchQty = cursor.getString(4);
+                    String buyerName = cursor.getString(5);
+                    String styleCat = cursor.getString(6);
+                    String styleSubCat = cursor.getString(7);
+                    int garmentNo = Integer.parseInt(cursor.getString(8));
+                    String garmentPos = cursor.getString(9);
+                    String defectName = cursor.getString(10);
+                    int defectCount = Integer.parseInt(cursor.getString(11));
+                    String color = cursor.getString(12);
+                    String defectPos = cursor.getString(13);
+                    String size = cursor.getString(14);
+                    int lotNo = Integer.parseInt(cursor.getString(15));
+                    String po = cursor.getString(16);
+                    String smv = cursor.getString(17);
+                    int id = Integer.parseInt(cursor.getString(18));
+                    String operatorID = cursor.getString(19);
+                    String machineID = cursor.getString(20);
+                    String userID = cursor.getString(21);
+                    String serverLotNo = cursor.getString(22);
 
-        Cursor cursor = db.rawQuery(sql, null);
-        if (cursor.moveToFirst()) {
-            do {
-                //"ID","Unit","Time","Date","BatchQty","BuyerName","StyleCategory","StyleSubCategory","GarmentsNo","GarmentsPos","DefectName","DefectCount","Color","DefectPos","Size"
-                //int id = Integer.parseInt(cursor.getString(0));
-                String unit = cursor.getString(0);
-                String line = cursor.getString(1);
-                String time = cursor.getString(2);
-                String date = cursor.getString(3);
-                String batchQty = cursor.getString(4);
-                String buyerName = cursor.getString(5);
-                String styleCat = cursor.getString(6);
-                String styleSubCat = cursor.getString(7);
-                int garmentNo = Integer.parseInt(cursor.getString(8));
-                String garmentPos = cursor.getString(9);
-                String defectName = cursor.getString(10);
-                int defectCount = Integer.parseInt(cursor.getString(11));
-                String color = cursor.getString(12);
-                String defectPos = cursor.getString(13);
-                String size = cursor.getString(14);
-                int lotNo = Integer.parseInt(cursor.getString(15));
-                String po = cursor.getString(16);
-                String smv = cursor.getString(17);
-                int id = Integer.parseInt(cursor.getString(18));
-                String operatorID = cursor.getString(19);
-                String machineID = cursor.getString(20);
-                String userID = cursor.getString(21);
-                String serverLotNo = cursor.getString(22);
+                    Defect defect = new Defect(defectName, defectCount);
 
-                Defect defect = new Defect(defectName, defectCount);
+                    QCDataModel qcDataModel = new QCDataModel(timeStamp, lotNo,
+                            unit, line, time, date, batchQty, buyerName,
+                            styleCat, styleSubCat, garmentNo, garmentPos,
+                            defect, color, defectPos, size, po, smv
+                    );
+                    qcDataModel.setGarmentsID();
 
-                QCDataModel qcDataModel = new QCDataModel(timeStamp, lotNo,
-                        unit, line, time, date, batchQty, buyerName,
-                        styleCat, styleSubCat, garmentNo, garmentPos,
-                        defect, color, defectPos, size, po, smv
-                );
-                qcDataModel.setGarmentsID();
+                    qcDataModel.setId(id);
+                    qcDataModel.setMachineID(machineID);
+                    qcDataModel.setOperatorID(operatorID);
+                    qcDataModel.setUserID(userID);
+                    qcDataModel.setServerLotNo(serverLotNo);
 
-                qcDataModel.setId(id);
-                qcDataModel.setMachineID(machineID);
-                qcDataModel.setOperatorID(operatorID);
-                qcDataModel.setUserID(userID);
-                qcDataModel.setServerLotNo(serverLotNo);
-
-                qcDataModelArrayList.add(qcDataModel);
-            } while (cursor.moveToNext());
+                    qcDataModelArrayList.add(qcDataModel);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        cursor.close();
 
         return qcDataModelArrayList;
 
@@ -1148,14 +1189,18 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             db.execSQL("DROP TABLE IF EXISTS QCGarmentsDefect");
             db.execSQL("DROP TABLE IF EXISTS QCGarmentDefectCounts");
+            db.execSQL("DROP TABLE IF EXISTS ServerQCGarmentsDefect");
 
-            Log.d("SQLite_DB", "Clear DB table");
+
+            Log.d("SQLite_DB", "Clear DB table done");
 
 
             db.execSQL(createQCGarmentsDefect);
             db.execSQL(createQCGarmentDefectCounts);
+            db.execSQL(createServerQCGarmentDataTable);
 
-            Log.d("SQLite_DB", "Create DB table");
+
+            Log.d("SQLite_DB", "Create DB table done");
 
 
         } catch (Exception e) {
@@ -1164,4 +1209,380 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public void insertServerGarmentsDefectEntry(QCDataModel qcDataModel) {
+        Log.e(TAG, "onAddQCdata: " + qcDataModel.toString());
+        long tempCount = qcDataModel.getGarmentNo();
+
+        boolean isFound = isFoundServerDefectEntry(qcDataModel);
+        if (!isFound) {
+
+            String sql = "INSERT INTO \"ServerQCGarmentsDefect\"(\"Unit\",\"Line\",\"Date\",\"Time\",\"BuyerName\",\"BatchQty\",\"StyleCategory\",\"StyleSubCategory\"," +
+                    "\"GarmentsNo\",\"GarmentPos\",\"Color\",\"DefectPos\",\"DefectName\",\"DefectCount\",\"Size\",\"LotNo\",\"PO\",\"SMV\",\"OperatorID\",\"MachineID\",\"UserID\",\"ServerLotNo\") \n" +
+                    "VALUES (" +
+                    "'" + qcDataModel.getUnit() + "'," +
+                    "'" + qcDataModel.getLine() + "'," +
+                    "'" + qcDataModel.getDate() + "'," +
+                    "'" + qcDataModel.getTime() + "'," +
+                    "\"" + qcDataModel.getBuyerName() + "\"," +
+                    "'" + qcDataModel.getBatchQty() + "'," +
+                    "'" + qcDataModel.getStyleCat() + "'," +
+                    "\"" + qcDataModel.getStyleSubCat() + "\"," +
+                    "'" + tempCount + "'," +
+                    "'" + qcDataModel.getGarmentPos() + "'," +
+                    "'" + qcDataModel.getColor() + "'," +
+                    "'" + qcDataModel.getDefectPos() + "'," +
+                    "'" + qcDataModel.getDefect().getName() + "'," +
+                    "'" + qcDataModel.getDefect().getDefectCount() + "'," +
+                    "'" + qcDataModel.getSize() + "'," +
+                    "'" + qcDataModel.getLotNo() + "'," +
+                    "'" + qcDataModel.getPo() + "'," +
+                    "'" + qcDataModel.getSmv() + "'," +
+                    "'" + qcDataModel.getOperatorID() + "'," +
+                    "'" + qcDataModel.getMachineID() + "'," +
+                    "'" + qcDataModel.getUserID() + "'," +
+                    "'" + qcDataModel.getServerLotNo() + "'" +
+                    ");";
+
+            try {
+                SQLiteDatabase db = this.getWritableDatabase();
+                db.execSQL(sql);
+
+                Log.d("SQLITE_DB", "insertGarmentsDefectEntry: " + getLastAddedRowId());
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("SQLITE_DB", "insertGarmentsDefectEntry: " + e.getMessage());
+            }
+        } else {
+            updateServerDefectCount(qcDataModel);
+        }
+
+
+    }
+
+    private void updateServerDefectCount(QCDataModel qcDataModel) {
+        long tempCount = qcDataModel.getGarmentNo();
+        String sql = "UPDATE ServerQCGarmentsDefect SET \"DefectCount\"= " + qcDataModel.getDefect().getDefectCount() + "  WHERE \n" +
+                "\"Unit\" = '" + qcDataModel.getUnit() + "' AND \n" +
+                "\"Line\" = '" + qcDataModel.getLine() + "' AND \n" +
+                "\"BuyerName\" = '" + qcDataModel.getBuyerName() + "' AND \n" +
+                "\"BatchQty\" = '" + qcDataModel.getBatchQty() + "' AND \n" +
+                "\"StyleCategory\" = \"" + qcDataModel.getStyleCat() + "\" AND \"" +
+                "StyleSubCategory\" =\"" + qcDataModel.getStyleSubCat() + "\" AND \n" +
+                "\"GarmentsNo\" = '" + tempCount + "' AND \n" +
+                " \"GarmentPos\" = '" + qcDataModel.getGarmentPos() + "' AND \n" +
+                " \"Color\"  = '" + qcDataModel.getColor() + "' AND  \n" +
+                " \"DefectPos\" = '" + qcDataModel.getDefectPos() + "' AND \n" +
+                " \"DefectName\" = '" + qcDataModel.getDefect().getName() + "' AND \n" +
+                " \"PO\" = '" + qcDataModel.getPo() + "' AND \n" +
+                " \"LotNo\" = '" + qcDataModel.getLotNo() + "' AND \n" +
+                " \"Size\"= '" + qcDataModel.getSize() + "';";
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL(sql);
+
+            Log.d("SQLITE_DB", "updateGarmentsDefectEntry: " + getLastAddedRowId());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "updateGarmentsDefectEntry: " + e.getMessage());
+        }
+    }
+
+    private boolean isFoundServerDefectEntry(QCDataModel qcDataModel) {
+        long tempCount = qcDataModel.getGarmentNo();
+        String sql = "SELECT * FROM\n" +
+                "\"ServerQCGarmentsDefect\" WHERE \n" +
+                "\"Unit\" = '" + qcDataModel.getUnit() + "' AND \n" +
+                "\"Line\" = '" + qcDataModel.getLine() + "' AND \n" +
+                "\"BuyerName\" = '" + qcDataModel.getBuyerName() + "' AND \n" +
+                "\"BatchQty\" = '" + qcDataModel.getBatchQty() + "' AND \n" +
+                "\"StyleCategory\" = \"" + qcDataModel.getStyleCat() + "\" AND \"" +
+                "StyleSubCategory\" =\"" + qcDataModel.getStyleSubCat() + "\" AND \n" +
+                "\"GarmentsNo\" = '" + tempCount + "' AND \n" +
+                " \"GarmentPos\" = '" + qcDataModel.getGarmentPos() + "' AND \n" +
+                " \"Color\"  = '" + qcDataModel.getColor() + "' AND  \n" +
+                " \"DefectPos\" = '" + qcDataModel.getDefectPos() + "' AND \n" +
+                " \"DefectName\" = '" + qcDataModel.getDefect().getName() + "' AND \n" +
+                " \"PO\" = '" + qcDataModel.getPo() + "' AND \n" +
+                " \"LotNo\" = '" + qcDataModel.getLotNo() + "' AND \n" +
+                " \"Size\"= '" + qcDataModel.getSize() + "';";
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(sql, null);
+            return cursor.getCount() != 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "insertServerGarmentsDefectEntry: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    public void deleteServerGarmentDefectEntry(QCDataModel qcDataModel) {
+        long tempCount = qcDataModel.getGarmentNo();
+        String sql = "DELETE FROM\n" +
+                "\"ServerQCGarmentsDefect\" WHERE \n" +
+                "\"Unit\" = '" + qcDataModel.getUnit() + "' AND \n" +
+                "\"Line\" = '" + qcDataModel.getLine() + "' AND \n" +
+                "\"BuyerName\" = '" + qcDataModel.getBuyerName() + "' AND \n" +
+                "\"BatchQty\" = '" + qcDataModel.getBatchQty() + "' AND \n" +
+                "\"StyleCategory\" = \"" + qcDataModel.getStyleCat() + "\" AND \"" +
+                "StyleSubCategory\" =\"" + qcDataModel.getStyleSubCat() + "\" AND \n" +
+                "\"GarmentsNo\" = '" + tempCount + "' AND \n" +
+                " \"GarmentPos\" = '" + qcDataModel.getGarmentPos() + "' AND \n" +
+                " \"Color\"  = '" + qcDataModel.getColor() + "' AND  \n" +
+                " \"DefectPos\" = '" + qcDataModel.getDefectPos() + "' AND \n" +
+                " \"DefectName\" = '" + qcDataModel.getDefect().getName() + "' AND \n" +
+                " \"PO\" = '" + qcDataModel.getPo() + "' AND \n" +
+                " \"LotNo\" = '" + qcDataModel.getLotNo() + "' AND \n" +
+                " \"Size\"= '" + qcDataModel.getSize() + "';";
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL(sql);
+            Log.d("SQLITE_DB", "deleteGarmentsDefectEntry: " + getLastAddedRowId());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "deleteGarmentsDefectEntry: " + e.getMessage());
+        }
+
+    }
+
+
+    public boolean isFoundServerGarmentNo(int lotNo, int garmentsNo, String date) {
+
+        String sql = "SELECT * FROM ServerQCGarmentsDefect WHERE ServerQCGarmentsDefect.Date = '" + date + "' AND LotNo = " + lotNo + " AND GarmentsNo = " + garmentsNo + ";";
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(sql, null);
+            return cursor.getCount() != 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "isFoundServerGarmentNo: " + e.getMessage());
+        }
+
+
+        return false;
+    }
+
+
+    public void insertServerNoDefect(QCDataModel qcDataModel) {
+
+        String sql = "INSERT INTO \"ServerQCGarmentsDefect\"(\"Unit\",\"Line\",\"Date\",\"Time\",\"BuyerName\",\"BatchQty\",\"StyleCategory\",\"StyleSubCategory\"," +
+                "\"GarmentsNo\",\"GarmentPos\",\"Color\",\"DefectPos\",\"DefectName\",\"DefectCount\",\"Size\",\"LotNo\",\"PO\",\"SMV\",\"OperatorID\",\"MachineID\",\"UserID\",\"ServerLotNo\") \n" +
+                "VALUES (" +
+                "'" + qcDataModel.getUnit() + "'," +
+                "'" + qcDataModel.getLine() + "'," +
+                "'" + qcDataModel.getDate() + "'," +
+                "'" + qcDataModel.getTime() + "'," +
+                "\"" + qcDataModel.getBuyerName() + "\"," +
+                "'" + qcDataModel.getBatchQty() + "'," +
+                "'" + qcDataModel.getStyleCat() + "'," +
+                "\"" + qcDataModel.getStyleSubCat() + "\"," +
+                "'" + qcDataModel.getGarmentNo() + "'," +
+                "'na'," +
+                "'" + qcDataModel.getColor() + "'," +
+                "'na'," +
+                "'na'," +
+                "'0'," +
+                "'" + qcDataModel.getSize() + "'," +
+                "'" + qcDataModel.getLotNo() + "'," +
+                "'" + qcDataModel.getPo() + "'," +
+                "'" + qcDataModel.getSmv() + "'," +
+                "'" + qcDataModel.getOperatorID() + "'," +
+                "'" + qcDataModel.getMachineID() + "'," +
+                "'" + qcDataModel.getUserID() + "'," +
+                "'" + qcDataModel.getServerLotNo() + "'" +
+                ");";
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL(sql);
+
+            Log.d("SQLITE_DB", "insertGarmentsDefectEntry: " + getLastAddedRowId());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "insertGarmentsDefectEntry: " + e.getMessage());
+        }
+
+
+    }
+
+    public List<QCDataModel> getAllServerQCDataModelsForSendingToDB(String timeStamp, String mydate) {
+        List<QCDataModel> qcDataModelArrayList = new ArrayList<>();
+        String sql = DBQueries.selectAllDefectListDataForSendingServer + mydate + "' AND isSynced = 0 ;";
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    //"ID","Unit","Time","Date","BatchQty","BuyerName","StyleCategory","StyleSubCategory","GarmentsNo","GarmentsPos","DefectName","DefectCount","Color","DefectPos","Size"
+                    //int id = Integer.parseInt(cursor.getString(0));
+                    String unit = cursor.getString(0);
+                    String line = cursor.getString(1);
+                    String time = cursor.getString(2);
+                    String date = cursor.getString(3);
+                    String batchQty = cursor.getString(4);
+                    String buyerName = cursor.getString(5);
+                    String styleCat = cursor.getString(6);
+                    String styleSubCat = cursor.getString(7);
+                    int garmentNo = Integer.parseInt(cursor.getString(8));
+                    String garmentPos = cursor.getString(9);
+                    String defectName = cursor.getString(10);
+                    int defectCount = Integer.parseInt(cursor.getString(11));
+                    String color = cursor.getString(12);
+                    String defectPos = cursor.getString(13);
+                    String size = cursor.getString(14);
+                    int lotNo = Integer.parseInt(cursor.getString(15));
+                    String po = cursor.getString(16);
+                    String smv = cursor.getString(17);
+                    int id = -1;
+                    String operatorID = cursor.getString(18);
+                    String machineID = cursor.getString(19);
+                    String userID = cursor.getString(20);
+                    String serverLotNo = cursor.getString(21);
+
+                    Defect defect = new Defect(defectName, defectCount);
+
+                    QCDataModel qcDataModel = new QCDataModel(timeStamp, lotNo,
+                            unit, line, time, date, batchQty, buyerName,
+                            styleCat, styleSubCat, garmentNo, garmentPos,
+                            defect, color, defectPos, size, po, smv
+                    );
+                    qcDataModel.setGarmentsID();
+
+                    qcDataModel.setId(id);
+                    qcDataModel.setMachineID(machineID);
+                    qcDataModel.setOperatorID(operatorID);
+                    qcDataModel.setUserID(userID);
+                    qcDataModel.setServerLotNo(serverLotNo);
+
+                    qcDataModelArrayList.add(qcDataModel);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "getAllServerQCDataModelsByGarmentNoForDeletingFromServer: " + e.getMessage());
+        }
+        return qcDataModelArrayList;
+
+
+    }
+
+    public List<QCDataModel> getAllServerQCDataModelsByGarmentNoForDeletingFromServer(String timeStamp, int mGarmentNo, int myLotNo, String myDate) {
+        List<QCDataModel> qcDataModelArrayList = new ArrayList<>();
+        String sql = DBQueries.selectServerAllDefectListDataByGarmentsNoForDeleting + mGarmentNo + " AND LotNo = " + myLotNo + " AND Date = '" + myDate + "';";
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    //"ID","Unit","Time","Date","BatchQty","BuyerName","StyleCategory","StyleSubCategory","GarmentsNo","GarmentsPos","DefectName","DefectCount","Color","DefectPos","Size"
+                    //int id = Integer.parseInt(cursor.getString(0));
+                    String unit = cursor.getString(0);
+                    String line = cursor.getString(1);
+                    String time = cursor.getString(2);
+                    String date = cursor.getString(3);
+                    String batchQty = cursor.getString(4);
+                    String buyerName = cursor.getString(5);
+                    String styleCat = cursor.getString(6);
+                    String styleSubCat = cursor.getString(7);
+                    int garmentNo = Integer.parseInt(cursor.getString(8));
+                    String garmentPos = cursor.getString(9);
+                    String defectName = cursor.getString(10);
+                    int defectCount = Integer.parseInt(cursor.getString(11));
+                    String color = cursor.getString(12);
+                    String defectPos = cursor.getString(13);
+                    String size = cursor.getString(14);
+                    int lotNo = Integer.parseInt(cursor.getString(15));
+                    String po = cursor.getString(16);
+                    String smv = cursor.getString(17);
+                    int id = -1;
+                    String operatorID = cursor.getString(18);
+                    String machineID = cursor.getString(19);
+                    String userID = cursor.getString(20);
+                    String serverLotNo = cursor.getString(21);
+
+                    Defect defect = new Defect(defectName, defectCount);
+
+                    QCDataModel qcDataModel = new QCDataModel(timeStamp, lotNo,
+                            unit, line, time, date, batchQty, buyerName,
+                            styleCat, styleSubCat, garmentNo, garmentPos,
+                            defect, color, defectPos, size, po, smv
+                    );
+                    qcDataModel.setGarmentsID();
+
+                    qcDataModel.setId(id);
+                    qcDataModel.setMachineID(machineID);
+                    qcDataModel.setOperatorID(operatorID);
+                    qcDataModel.setUserID(userID);
+                    qcDataModel.setServerLotNo(serverLotNo);
+
+                    qcDataModelArrayList.add(qcDataModel);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "getAllServerQCDataModelsByGarmentNoForDeletingFromServer: " + e.getMessage());
+        }
+
+        return qcDataModelArrayList;
+
+
+    }
+
+
+    public void deleteServerTable(int lotNo, int garmentNo, String date) {
+
+        String sql = "DELETE FROM\n" +
+                "\"ServerQCGarmentsDefect\" WHERE \n" +
+                "\"date\" = '" + date + "' AND \n" +
+                "\"GarmentsNo\" = '" + garmentNo + "' AND \n" +
+                " \"LotNo\" = '" + lotNo + "';";
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL(sql);
+            Log.d("SQLITE_DB", "deleteGarmentsDefectEntry: " + getLastAddedRowId());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "deleteGarmentsDefectEntry: " + e.getMessage());
+        }
+
+    }
+
+    public int totalServerGarmentsEntry() {
+
+        String sql = DBQueries.totalServerGarmentsEntry;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(sql, null);
+            return cursor.getCount();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("SQLITE_DB", "totalServerGarmentsEntry: " + e.getMessage());
+        }
+
+
+        return 0;
+    }
 }

@@ -9,7 +9,7 @@
 
 <resources>
     <string name="app_name">QMS Application</string>
-    <string name="login_head_line">Knitting QMS-Celsius v11</string>
+    <string name="login_head_line">Knitting QMS-Celsius v13</string>
     <string name="application_login_subhead">Application Login</string>
     <string name="floor_info_header">QMS (FLOOR INFO)</string>
     <string name="production_unit">Production Unit</string>

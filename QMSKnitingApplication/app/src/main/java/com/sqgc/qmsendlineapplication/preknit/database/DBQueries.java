@@ -33,7 +33,8 @@ public class DBQueries {
             "\t\t\tJOIN StyleCategory on StyleInBuyers.StyleCateID = StyleCategory.ID WHERE ";
 
 
-    public static String insertDefect = "INSERT INTO \"DEFECT\" (\"ID\",\"NAME\") VALUES (1,'Un even knitting tension'),\n" +
+    public static String insertDefect = "INSERT INTO \"DEFECT\" (\"ID\",\"NAME\") VALUES " +
+            "(1,'Un even knitting tension'),\n" +
             " (2,'Thin & thick yarn'),\n" +
             " (3,'Un even dyeing'),\n" +
             " (4,'High Frequency knot'),\n" +
@@ -75,8 +76,8 @@ public class DBQueries {
             " (40,'Yarn contamination'),\n" +
             " (41,'Wrong mending'),\n" +
             " (42,'Loose button'),\n" +
-            " (43,'Button up down'),\n" +
-            " (44,'Un even leg shape'),\n" +
+            " (43,'Button up down');";
+/*            " (44,'Un even leg shape'),\n" +
             " (45,'Fabric fault'),\n" +
             " (46,'Stain mark'),\n" +
             " (47,'Colour shading'),\n" +
@@ -157,7 +158,7 @@ public class DBQueries {
             " (123,'High/Low @ leg elastic joint'),\n" +
             " (124,'High/Low @ waist elastic joint'),\n" +
             " (125,'Waviness @side seam'),\n" +
-            " (126,'High /Low at waist elastic joint');";
+            " (126,'High /Low at waist elastic joint');";*/
 
 
     public static String defectPosByIDsql = "SELECT DEFECTPOSITION.NAME FROM DEFECTPOSITION WHERE ID = ";
@@ -758,6 +759,19 @@ MachineID
             "LEFT JOIN QCGarmentDefectCounts on QCGarmentsDefect.ID = QCGarmentDefectCounts.QCGarmentDefectID\n" +
             "LEFT JOIN DEFECT on QCGarmentDefectCounts.DefectID = DEFECT.ID\n" +
             "WHERE GarmentsNo = ";
+
+
+    public static String selectAllDefectListDataForSendingServer = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DefectName, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, LotNo, PO, SMV, OperatorID, MachineID, userID, ServerLotNo\n" +
+            "FROM ServerQCGarmentsDefect \n" +
+            "WHERE Date = '";
+
+    public static String selectServerAllDefectListDataByGarmentsNoForDeleting = "SELECT Unit, Line, Time, Date, BatchQty, BuyerName, StyleCategory, StyleSubCategory, GarmentsNo, GarmentPos, IFNULL(DefectName, 'na') as NAME  , IFNULL(DefectCount, 0) as DefectCount, Color, DefectPos, Size, LotNo, PO, SMV, ID, OperatorID, MachineID, userID, ServerLotNo\n" +
+            "FROM ServerQCGarmentsDefect \n" +
+            "WHERE GarmentsNo = ";
+
+
+    public static String totalServerGarmentsEntry = "SELECT DISTINCT LotNo, GarmentsNo\n" +
+            "FROM ServerQCGarmentsDefect  ";
 
 
 }
