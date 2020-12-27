@@ -497,7 +497,7 @@ public class MainPresenterUpdated {
             qcDataModel.setStyleSubCat(lotSetShared.getGarmentSettings().getStyleSubCategory());
             qcDataModel.setPo(lotSetShared.getGarmentSettings().getPo().getName());
             qcDataModel.setTime(getCurrentTime());
-            qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit().getName() == null ? "Newton" : lotSetShared.getFloorSetting().getProductionUnit().getName());
+            qcDataModel.setUnit(lotSetShared.getFloorSetting().getProductionUnit() == null ? "Newton" : lotSetShared.getFloorSetting().getProductionUnit().getName());
             qcDataModel.setSmv(lotSetShared.getGarmentSettings().getSmv());
             qcDataModel.setOperatorID(lotSetShared.getGarmentSettings().getOperatorID());
             qcDataModel.setMachineID(lotSetShared.getGarmentSettings().getMachineID());
